@@ -43,5 +43,5 @@ Now you can either parse the anime database file or a dead entries file by using
 
 ```kotlin
 val parser = DatabaseFileParser<Anime>(fileParser = AnimeDatabaseJsonStringParser())
-parser.parse(URL("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database.json"))
+val allAnime: List<Anime> = parser.parse(URL("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database.json"))
 ```
