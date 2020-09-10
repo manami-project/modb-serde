@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.4.0"
+    kotlin("jvm") version "1.4.10"
     id("com.jfrog.bintray") version "1.8.5"
     `maven-publish`
     `java-library`
@@ -19,6 +19,7 @@ val projectName = "modb-db-parser"
 dependencies {
     api("io.github.manamiproject:modb-core:2.2.0")
 
+    implementation(platform(kotlin("bom")))
     implementation("ch.qos.logback:logback-classic:1.2.3")
 
     testImplementation("io.github.manamiproject:modb-test:1.0.2")
