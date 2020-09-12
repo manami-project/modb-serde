@@ -20,7 +20,6 @@ dependencies {
     api("io.github.manamiproject:modb-core:2.2.1")
 
     implementation(platform(kotlin("bom")))
-    implementation("ch.qos.logback:logback-classic:1.2.3")
 
     testImplementation("io.github.manamiproject:modb-test:1.0.3")
 }
