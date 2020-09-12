@@ -22,7 +22,7 @@ dependencies {
     implementation(platform(kotlin("bom")))
     implementation("ch.qos.logback:logback-classic:1.2.3")
 
-    testImplementation("io.github.manamiproject:modb-test:1.0.2")
+    testImplementation("io.github.manamiproject:modb-test:1.0.3")
 }
 
 val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
