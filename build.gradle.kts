@@ -21,7 +21,7 @@ dependencies {
 
     implementation(platform(kotlin("bom")))
 
-    testImplementation("io.github.manamiproject:modb-test:1.0.3")
+    testImplementation("io.github.manamiproject:modb-test:1.0.4")
 }
 
 val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
