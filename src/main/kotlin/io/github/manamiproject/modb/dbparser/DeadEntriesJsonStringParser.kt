@@ -4,7 +4,7 @@ import io.github.manamiproject.modb.core.Json
 import io.github.manamiproject.modb.core.config.AnimeId
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
 
-class DeadEntriesJsonStringParser : JsonStringParser<AnimeId> {
+public class DeadEntriesJsonStringParser : JsonStringParser<AnimeId> {
 
     override fun parse(json: String): List<AnimeId> {
         require(json.isNotBlank()) { "Given json string must not be blank." }
@@ -21,7 +21,7 @@ class DeadEntriesJsonStringParser : JsonStringParser<AnimeId> {
         return deadEntries
     }
 
-    companion object {
+    private companion object {
         private val log by LoggerDelegate()
     }
 }

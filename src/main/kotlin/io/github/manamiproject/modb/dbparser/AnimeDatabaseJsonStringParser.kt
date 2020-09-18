@@ -6,7 +6,7 @@ import io.github.manamiproject.modb.core.models.Anime
 import io.github.manamiproject.modb.core.models.AnimeSeason
 import java.net.URL
 
-class AnimeDatabaseJsonStringParser : JsonStringParser<Anime> {
+public class AnimeDatabaseJsonStringParser : JsonStringParser<Anime> {
 
     override fun parse(json: String): List<Anime> {
         require(json.isNotBlank()) { "Given json string must not be blank." }
@@ -34,7 +34,7 @@ class AnimeDatabaseJsonStringParser : JsonStringParser<Anime> {
         }
     }
 
-    companion object {
+    private companion object {
         private val log by LoggerDelegate()
     }
 }

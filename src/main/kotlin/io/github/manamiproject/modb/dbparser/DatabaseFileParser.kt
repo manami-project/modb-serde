@@ -8,7 +8,7 @@ import io.github.manamiproject.modb.core.httpclient.HttpClient
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
 import java.net.URL
 
-class DatabaseFileParser<T>(
+public class DatabaseFileParser<T>(
     private val httpClient: HttpClient = DefaultHttpClient(),
     private val fileParser: JsonStringParser<T>
 ) : ExternalResourceParser<T>, JsonStringParser<T> by fileParser {
@@ -34,7 +34,7 @@ class DatabaseFileParser<T>(
         }
     }
 
-    companion object {
+    private companion object {
         private val log by LoggerDelegate()
     }
 }
