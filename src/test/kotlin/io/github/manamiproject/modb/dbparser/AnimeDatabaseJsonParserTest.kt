@@ -7,9 +7,9 @@ import io.github.manamiproject.modb.test.loadTestResource
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.net.URL
+import java.net.URI
 
-internal class AnimeDatabaseJsonStringParserTest {
+internal class AnimeDatabaseJsonParserTest {
 
     @Test
     fun `throws exception if the given string is empty`() {
@@ -49,15 +49,15 @@ internal class AnimeDatabaseJsonStringParserTest {
                 _title = "Seikai no Monshou",
                 type = Anime.Type.TV,
                 episodes = 13,
-                picture = URL("https://cdn.anidb.net/images/main/224618.jpg"),
-                thumbnail = URL("https://cdn.anidb.net/images/main/224618.jpg-thumb.jpg"),
+                picture = URI("https://cdn.anidb.net/images/main/224618.jpg"),
+                thumbnail = URI("https://cdn.anidb.net/images/main/224618.jpg-thumb.jpg"),
                 status = Anime.Status.FINISHED,
                 animeSeason = AnimeSeason(
                     season = AnimeSeason.Season.UNDEFINED,
                     _year = 1999
                 )
             ).apply {
-                addSources(listOf(URL("https://anidb.net/anime/1")))
+                addSources(listOf(URI("https://anidb.net/anime/1")))
                 addSynonyms(
                     listOf(
                         "CotS",
@@ -70,9 +70,9 @@ internal class AnimeDatabaseJsonStringParserTest {
                 )
                 addRelations(
                     listOf(
-                        URL("https://anidb.net/anime/1623"),
-                        URL("https://anidb.net/anime/4"),
-                        URL("https://anidb.net/anime/6")
+                        URI("https://anidb.net/anime/1623"),
+                        URI("https://anidb.net/anime/4"),
+                        URI("https://anidb.net/anime/6")
                     )
                 )
                 addTags(
@@ -90,21 +90,21 @@ internal class AnimeDatabaseJsonStringParserTest {
                 _title = "Cowboy Bebop",
                 type = Anime.Type.TV,
                 episodes = 26,
-                picture = URL("https://cdn.myanimelist.net/images/anime/4/19644.jpg"),
-                thumbnail = URL("https://cdn.myanimelist.net/images/anime/4/19644t.jpg"),
+                picture = URI("https://cdn.myanimelist.net/images/anime/4/19644.jpg"),
+                thumbnail = URI("https://cdn.myanimelist.net/images/anime/4/19644t.jpg"),
                 status = Anime.Status.FINISHED,
                 animeSeason = AnimeSeason(
                     season = AnimeSeason.Season.SPRING,
                     _year = 1998
                 )
             ).apply {
-                addSources(listOf(URL("https://myanimelist.net/anime/1")))
+                addSources(listOf(URI("https://myanimelist.net/anime/1")))
                 addSynonyms(listOf("カウボーイビバップ"))
                 addRelations(
                     listOf(
-                        URL("https://myanimelist.net/anime/17205"),
-                        URL("https://myanimelist.net/anime/4037"),
-                        URL("https://myanimelist.net/anime/5")
+                        URI("https://myanimelist.net/anime/17205"),
+                        URI("https://myanimelist.net/anime/4037"),
+                        URI("https://myanimelist.net/anime/5")
                     )
                 )
                 addTags(
@@ -122,22 +122,22 @@ internal class AnimeDatabaseJsonStringParserTest {
                 _title = "Cowboy Bebop: Tengoku no Tobira",
                 type = Anime.Type.Movie,
                 episodes = 1,
-                picture = URL("https://cdn.myanimelist.net/images/anime/1439/93480.jpg"),
-                thumbnail = URL("https://cdn.myanimelist.net/images/anime/1439/93480t.jpg"),
+                picture = URI("https://cdn.myanimelist.net/images/anime/1439/93480.jpg"),
+                thumbnail = URI("https://cdn.myanimelist.net/images/anime/1439/93480t.jpg"),
                 status = Anime.Status.FINISHED,
                 animeSeason = AnimeSeason(
                     season = AnimeSeason.Season.SPRING,
                     _year = 1998
                 )
             ).apply {
-                addSources(listOf(URL("https://myanimelist.net/anime/5")))
+                addSources(listOf(URI("https://myanimelist.net/anime/5")))
                 addSynonyms(
                     listOf(
                         "Cowboy Bebop: Knockin' on Heaven's Door",
                         "Cowboy Bebop: The Movie", "カウボーイビバップ 天国の扉"
                     )
                 )
-                addRelations(listOf(URL("https://myanimelist.net/anime/1")))
+                addRelations(listOf(URI("https://myanimelist.net/anime/1")))
                 addTags(
                     listOf(
                         "action",
@@ -152,15 +152,15 @@ internal class AnimeDatabaseJsonStringParserTest {
                 _title = "11 Eyes",
                 type = Anime.Type.TV,
                 episodes = 12,
-                picture = URL("https://cdn.anidb.net/images/main/32901.jpg"),
-                thumbnail = URL("https://cdn.anidb.net/images/main/32901.jpg-thumb.jpg"),
+                picture = URI("https://cdn.anidb.net/images/main/32901.jpg"),
+                thumbnail = URI("https://cdn.anidb.net/images/main/32901.jpg-thumb.jpg"),
                 status = Anime.Status.FINISHED,
                 animeSeason = AnimeSeason(
                     season = AnimeSeason.Season.UNDEFINED,
                     _year = 2009
                 )
             ).apply {
-                addSources(listOf(URL("https://anidb.net/anime/6751")))
+                addSources(listOf(URI("https://anidb.net/anime/6751")))
                 addSynonyms(
                     listOf(
                         "11 akių",
@@ -194,8 +194,8 @@ internal class AnimeDatabaseJsonStringParserTest {
                 _title = "11eyes",
                 type = Anime.Type.TV,
                 episodes = 12,
-                picture = URL("https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6682-ZptgLsCCNHjL.jpg"),
-                thumbnail = URL("https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/default.jpg"),
+                picture = URI("https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6682-ZptgLsCCNHjL.jpg"),
+                thumbnail = URI("https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/default.jpg"),
                 status = Anime.Status.FINISHED,
                 animeSeason = AnimeSeason(
                     season = AnimeSeason.Season.FALL,
@@ -204,8 +204,8 @@ internal class AnimeDatabaseJsonStringParserTest {
             ).apply {
                 addSources(
                     listOf(
-                        URL("https://anilist.co/anime/6682"),
-                        URL("https://myanimelist.net/anime/6682")
+                        URI("https://anilist.co/anime/6682"),
+                        URI("https://myanimelist.net/anime/6682")
                     )
                 )
                 addSynonyms(
@@ -217,10 +217,10 @@ internal class AnimeDatabaseJsonStringParserTest {
                 )
                 addRelations(
                     listOf(
-                        URL("https://anilist.co/anime/110465"),
-                        URL("https://anilist.co/anime/7739"),
-                        URL("https://myanimelist.net/anime/20557"),
-                        URL("https://myanimelist.net/anime/7739")
+                        URI("https://anilist.co/anime/110465"),
+                        URI("https://anilist.co/anime/7739"),
+                        URI("https://myanimelist.net/anime/20557"),
+                        URI("https://myanimelist.net/anime/7739")
                     )
                 )
                 addTags(

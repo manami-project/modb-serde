@@ -10,8 +10,8 @@ import java.net.URL
 
 public class DatabaseFileParser<T>(
     private val httpClient: HttpClient = DefaultHttpClient(),
-    private val fileParser: JsonStringParser<T>
-) : ExternalResourceParser<T>, JsonStringParser<T> by fileParser {
+    private val fileParser: JsonParser<T>
+) : ExternalResourceParser<T>, JsonParser<T> by fileParser {
 
     override fun parse(url: URL): List<T> {
         log.info("Downloading database file from [{}]", url)

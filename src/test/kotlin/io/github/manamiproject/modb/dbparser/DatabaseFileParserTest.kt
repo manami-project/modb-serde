@@ -67,7 +67,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
                 )
             }
 
-            val testDatabaseFileParser = object: JsonStringParser<Int> by TestDatabaseFileParser {
+            val testDatabaseFileParser = object: JsonParser<Int> by TestDatabaseFileParser {
                 override fun parse(json: String): List<Int> = listOf(1, 2, 3, 4, 5)
             }
 
@@ -129,7 +129,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
         @Test
         fun `correctly parse database file`() {
             // given
-            val testDatabaseFileParser = object: JsonStringParser<Int> by TestDatabaseFileParser {
+            val testDatabaseFileParser = object: JsonParser<Int> by TestDatabaseFileParser {
                 override fun parse(json: String): List<Int> = listOf(1, 2, 4, 5)
             }
 

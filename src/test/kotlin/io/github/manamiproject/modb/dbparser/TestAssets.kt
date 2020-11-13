@@ -12,6 +12,6 @@ internal object TestHttpClient : HttpClient {
     override fun post(url: URL, requestBody: RequestBody, headers: Map<String, List<String>>, retryWith: String): HttpResponse = shouldNotBeInvoked()
 }
 
-internal object TestDatabaseFileParser : JsonStringParser<Int> {
+internal object TestDatabaseFileParser : JsonParser<Int> {
     override fun parse(json: String): List<Int> = shouldNotBeInvoked()
 }

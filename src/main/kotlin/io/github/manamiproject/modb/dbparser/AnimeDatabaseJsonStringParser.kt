@@ -4,9 +4,9 @@ import io.github.manamiproject.modb.core.Json
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
 import io.github.manamiproject.modb.core.models.Anime
 import io.github.manamiproject.modb.core.models.AnimeSeason
-import java.net.URL
+import java.net.URI
 
-public class AnimeDatabaseJsonStringParser : JsonStringParser<Anime> {
+public class AnimeDatabaseJsonStringParser : JsonParser<Anime> {
 
     override fun parse(json: String): List<Anime> {
         require(json.isNotBlank()) { "Given json string must not be blank." }
@@ -23,12 +23,12 @@ public class AnimeDatabaseJsonStringParser : JsonStringParser<Anime> {
                     season = AnimeSeason.Season.of(it.animeSeason.season),
                     _year = it.animeSeason.year ?: 0
                 ),
-                picture = URL(it.picture),
-                thumbnail = URL(it.thumbnail)
+                picture = URI(it.picture),
+                thumbnail = URI(it.thumbnail)
             ).apply {
-                addSources(it.sources.map { url -> URL(url) })
+                addSources(it.sources.map { uri -> URI(uri) })
                 addSynonyms(it.synonyms)
-                addRelations(it.relations.map { url -> URL(url) })
+                addRelations(it.relations.map { uri -> URI(uri) })
                 addTags(it.tags)
             }
         }

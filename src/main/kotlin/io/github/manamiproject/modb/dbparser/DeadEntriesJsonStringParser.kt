@@ -4,7 +4,7 @@ import io.github.manamiproject.modb.core.Json
 import io.github.manamiproject.modb.core.config.AnimeId
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
 
-public class DeadEntriesJsonStringParser : JsonStringParser<AnimeId> {
+public class DeadEntriesJsonStringParser : JsonParser<AnimeId> {
 
     override fun parse(json: String): List<AnimeId> {
         require(json.isNotBlank()) { "Given json string must not be blank." }

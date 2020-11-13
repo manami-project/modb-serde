@@ -5,7 +5,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class DeadEntriesJsonStringParserTest {
+internal class DeadEntriesJsonParserTest {
 
     @Test
     fun `throws exception if the json string is empty`() {
