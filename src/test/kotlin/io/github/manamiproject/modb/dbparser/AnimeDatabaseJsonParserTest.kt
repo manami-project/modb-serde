@@ -54,36 +54,30 @@ internal class AnimeDatabaseJsonParserTest {
                 status = Anime.Status.FINISHED,
                 animeSeason = AnimeSeason(
                     season = AnimeSeason.Season.UNDEFINED,
-                    _year = 1999
+                    year = 1999,
                 )
             ).apply {
                 addSources(listOf(URI("https://anidb.net/anime/1")))
                 addSynonyms(
-                    listOf(
-                        "CotS",
-                        "Crest of the Stars",
-                        "Hvězdný erb",
-                        "SnM",
-                        "星界の紋章",
-                        "星界之纹章"
-                    )
+                    "CotS",
+                    "Crest of the Stars",
+                    "Hvězdný erb",
+                    "SnM",
+                    "星界の紋章",
+                    "星界之纹章",
                 )
                 addRelations(
-                    listOf(
-                        URI("https://anidb.net/anime/1623"),
-                        URI("https://anidb.net/anime/4"),
-                        URI("https://anidb.net/anime/6")
-                    )
+                    URI("https://anidb.net/anime/1623"),
+                    URI("https://anidb.net/anime/4"),
+                    URI("https://anidb.net/anime/6"),
                 )
                 addTags(
-                    listOf(
-                        "action",
-                        "adventure",
-                        "genetic modification",
-                        "novel",
-                        "science fiction",
-                        "space travel"
-                    )
+                    "action",
+                    "adventure",
+                    "genetic modification",
+                    "novel",
+                    "science fiction",
+                    "space travel",
                 )
             },
             Anime(
@@ -95,27 +89,23 @@ internal class AnimeDatabaseJsonParserTest {
                 status = Anime.Status.FINISHED,
                 animeSeason = AnimeSeason(
                     season = AnimeSeason.Season.SPRING,
-                    _year = 1998
+                    year = 1998,
                 )
             ).apply {
                 addSources(listOf(URI("https://myanimelist.net/anime/1")))
                 addSynonyms(listOf("カウボーイビバップ"))
                 addRelations(
-                    listOf(
-                        URI("https://myanimelist.net/anime/17205"),
-                        URI("https://myanimelist.net/anime/4037"),
-                        URI("https://myanimelist.net/anime/5")
-                    )
+                    URI("https://myanimelist.net/anime/17205"),
+                    URI("https://myanimelist.net/anime/4037"),
+                    URI("https://myanimelist.net/anime/5"),
                 )
                 addTags(
-                    listOf(
-                        "action",
-                        "adventure",
-                        "comedy",
-                        "drama",
-                        "sci-fi",
-                        "space"
-                    )
+                    "action",
+                    "adventure",
+                    "comedy",
+                    "drama",
+                    "sci-fi",
+                    "space",
                 )
             },
             Anime(
@@ -127,25 +117,21 @@ internal class AnimeDatabaseJsonParserTest {
                 status = Anime.Status.FINISHED,
                 animeSeason = AnimeSeason(
                     season = AnimeSeason.Season.SPRING,
-                    _year = 1998
+                    year = 1998,
                 )
             ).apply {
-                addSources(listOf(URI("https://myanimelist.net/anime/5")))
+                addSources(URI("https://myanimelist.net/anime/5"))
+                addRelations(URI("https://myanimelist.net/anime/1"))
                 addSynonyms(
-                    listOf(
-                        "Cowboy Bebop: Knockin' on Heaven's Door",
-                        "Cowboy Bebop: The Movie", "カウボーイビバップ 天国の扉"
-                    )
+                    "Cowboy Bebop: Knockin' on Heaven's Door",
+                    "Cowboy Bebop: The Movie", "カウボーイビバップ 天国の扉",
                 )
-                addRelations(listOf(URI("https://myanimelist.net/anime/1")))
                 addTags(
-                    listOf(
-                        "action",
-                        "drama",
-                        "mystery",
-                        "sci-fi",
-                        "space"
-                    )
+                    "action",
+                    "drama",
+                    "mystery",
+                    "sci-fi",
+                    "space",
                 )
             },
             Anime(
@@ -157,37 +143,33 @@ internal class AnimeDatabaseJsonParserTest {
                 status = Anime.Status.FINISHED,
                 animeSeason = AnimeSeason(
                     season = AnimeSeason.Season.UNDEFINED,
-                    _year = 2009
+                    year = 2009,
                 )
             ).apply {
                 addSources(listOf(URI("https://anidb.net/anime/6751")))
                 addSynonyms(
-                    listOf(
-                        "11 akių",
-                        "11 глаз",
-                        "11 چشم",
-                        "11eyes",
-                        "11eyes -罪與罰與贖的少女-",
-                        "11eyes: Tsumi to Batsu to Aganai no Shoujo",
-                        "أحد عشر عيناً",
-                        "イレブンアイズ",
-                        "罪与罚与赎的少女"
-                    )
+                    "11 akių",
+                    "11 глаз",
+                    "11 چشم",
+                    "11eyes",
+                    "11eyes -罪與罰與贖的少女-",
+                    "11eyes: Tsumi to Batsu to Aganai no Shoujo",
+                    "أحد عشر عيناً",
+                    "イレブンアイズ",
+                    "罪与罚与赎的少女",
                 )
                 addTags(
-                    listOf(
-                        "action",
-                        "angst",
-                        "contemporary fantasy",
-                        "ecchi",
-                        "erotic game",
-                        "fantasy",
-                        "female student",
-                        "seinen",
-                        "super power",
-                        "swordplay",
-                        "visual novel"
-                    )
+                    "action",
+                    "angst",
+                    "contemporary fantasy",
+                    "ecchi",
+                    "erotic game",
+                    "fantasy",
+                    "female student",
+                    "seinen",
+                    "super power",
+                    "swordplay",
+                    "visual novel",
                 )
             },
             Anime(
@@ -199,48 +181,40 @@ internal class AnimeDatabaseJsonParserTest {
                 status = Anime.Status.FINISHED,
                 animeSeason = AnimeSeason(
                     season = AnimeSeason.Season.FALL,
-                    _year = 2009
+                    year = 2009,
                 )
             ).apply {
                 addSources(
-                    listOf(
-                        URI("https://anilist.co/anime/6682"),
-                        URI("https://myanimelist.net/anime/6682")
-                    )
+                    URI("https://anilist.co/anime/6682"),
+                    URI("https://myanimelist.net/anime/6682"),
                 )
                 addSynonyms(
-                    listOf(
-                        "11eyes -Tsumi to Batsu to Aganai no Shoujo-",
-                        "11eyes イレブンアイズ",
-                        "イレブンアイズ"
-                    )
+                    "11eyes -Tsumi to Batsu to Aganai no Shoujo-",
+                    "11eyes イレブンアイズ",
+                    "イレブンアイズ",
                 )
                 addRelations(
-                    listOf(
-                        URI("https://anilist.co/anime/110465"),
-                        URI("https://anilist.co/anime/7739"),
-                        URI("https://myanimelist.net/anime/20557"),
-                        URI("https://myanimelist.net/anime/7739")
-                    )
+                    URI("https://anilist.co/anime/110465"),
+                    URI("https://anilist.co/anime/7739"),
+                    URI("https://myanimelist.net/anime/20557"),
+                    URI("https://myanimelist.net/anime/7739"),
                 )
                 addTags(
-                    listOf(
-                        "action",
-                        "demons",
-                        "ecchi",
-                        "ensemble cast",
-                        "gore",
-                        "magic",
-                        "male protagonist",
-                        "memory manipulation",
-                        "revenge",
-                        "super power",
-                        "supernatural",
-                        "survival",
-                        "swordplay",
-                        "tragedy",
-                        "witch"
-                    )
+                    "action",
+                    "demons",
+                    "ecchi",
+                    "ensemble cast",
+                    "gore",
+                    "magic",
+                    "male protagonist",
+                    "memory manipulation",
+                    "revenge",
+                    "super power",
+                    "supernatural",
+                    "survival",
+                    "swordplay",
+                    "tragedy",
+                    "witch",
                 )
             }
         )

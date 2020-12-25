@@ -21,7 +21,7 @@ public class AnimeDatabaseJsonStringParser : JsonParser<Anime> {
                 status = Anime.Status.valueOf(it.status),
                 animeSeason = AnimeSeason(
                     season = AnimeSeason.Season.of(it.animeSeason.season),
-                    _year = it.animeSeason.year ?: 0
+                    year = it.animeSeason.year ?: AnimeSeason.UNKNOWN_YEAR
                 ),
                 picture = URI(it.picture),
                 thumbnail = URI(it.thumbnail)

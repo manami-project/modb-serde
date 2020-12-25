@@ -19,7 +19,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
         fun `throws exception if the response code is not 200`() {
             // given
             val testHttpClient = object: HttpClient by TestHttpClient {
-                override fun get(url: URL, headers: Map<String, List<String>>, retryWith: String): HttpResponse = HttpResponse(500, "ERROR")
+                override fun get(url: URL, headers: Map<String, Collection<String>>, retryWith: String): HttpResponse = HttpResponse(500, "ERROR")
             }
 
             val defaultDatabaseFileParser = DatabaseFileParser(
@@ -40,7 +40,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
         fun `throws exception if the response body is blank`() {
             // given
             val testHttpClient = object: HttpClient by TestHttpClient {
-                override fun get(url: URL, headers: Map<String, List<String>>, retryWith: String): HttpResponse = HttpResponse(200, EMPTY)
+                override fun get(url: URL, headers: Map<String, Collection<String>>, retryWith: String): HttpResponse = HttpResponse(200, EMPTY)
             }
 
             val defaultDatabaseFileParser = DatabaseFileParser(
@@ -61,7 +61,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
         fun `correctly download and parse database file`() {
             // given
             val testHttpClient = object: HttpClient by TestHttpClient {
-                override fun get(url: URL, headers: Map<String, List<String>>, retryWith: String): HttpResponse = HttpResponse(
+                override fun get(url: URL, headers: Map<String, Collection<String>>, retryWith: String): HttpResponse = HttpResponse(
                     code = 200,
                     body = loadTestResource("test_db_for_deserialization.json")
                 )
