@@ -6,18 +6,6 @@ _[modb](https://github.com/manami-project?tab=repositories&q=modb&type=source)_ 
 This lib can parse both the anime database file as well as the files for the dead entries.
  
 # Usage
-Add repository and dependency
-```kotlin
-repositories {
-    maven {
-        url = uri("https://dl.bintray.com/manami-project/maven")
-    }
-}
-
-dependencies {
-    implementation("io.github.manamiproject:modb-db-parser:$version")
-}
-```
 
 Create an instance of the respective `JsonStringParser`:
 
