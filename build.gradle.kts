@@ -28,7 +28,7 @@ dependencies {
     implementation(platform(kotlin("bom")))
 
     testImplementation("ch.qos.logback:logback-classic:1.2.3")
-    testImplementation("io.github.manamiproject:modb-test:1.2.4")
+    testImplementation("io.github.manamiproject:modb-test:1.2.5")
 }
 
 kotlin {
