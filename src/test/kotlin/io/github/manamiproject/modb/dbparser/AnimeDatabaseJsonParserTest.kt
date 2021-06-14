@@ -110,7 +110,7 @@ internal class AnimeDatabaseJsonParserTest {
             },
             Anime(
                 _title = "Cowboy Bebop: Tengoku no Tobira",
-                type = Anime.Type.Movie,
+                type = Anime.Type.MOVIE,
                 episodes = 1,
                 picture = URI("https://cdn.myanimelist.net/images/anime/1439/93480.jpg"),
                 thumbnail = URI("https://cdn.myanimelist.net/images/anime/1439/93480t.jpg"),
