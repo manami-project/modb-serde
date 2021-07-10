@@ -53,10 +53,6 @@ tasks.withType<Test> {
     maxParallelForks = Runtime.getRuntime().availableProcessors()
 }
 
-object Versions {
-    const val JVM_TARGET = "11"
-}
-
 val sourcesJar by tasks.registering(Jar::class) {
     archiveClassifier.set("sources")
     from(sourceSets.main.get().allSource)
