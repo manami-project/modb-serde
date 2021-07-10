@@ -13,8 +13,8 @@ repositories {
         name = "GitHubPackages"
         url = uri("https://maven.pkg.github.com/$githubUsername/$projectName")
         credentials {
-            username = project.findProperty("gpr.user") as String? ?: githubUsername
-            password = project.findProperty("gpr.key") as String? ?: ""
+            username = parameter("GH_USERNAME", githubUsername)
+            password = parameter("GH_PACKAGES_READ_TOKEN")
         }
     }
 }
@@ -73,8 +73,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/$githubUsername/$projectName")
             credentials {
-                username = project.findProperty("gpr.user") as String? ?: githubUsername
-                password = project.findProperty("gpr.key") as String? ?: ""
+                username = parameter("GH_USERNAME", githubUsername)
+                password = parameter("GH_PACKAGES_RELEASE_TOKEN")
             }
         }
     }
@@ -109,4 +109,22 @@ publishing {
             }
         }
     }
+}
+
+object Versions {
+    const val JVM_TARGET = "11"
+}
+
+fun parameter(name: String, default: String = ""): String {
+    val env = System.getenv(name) ?: ""
+    if (env.isNotBlank()) {
+        return env
+    }
+
+    val property = project.findProperty(name) as String? ?: ""
+    if (property.isNotEmpty()) {
+        return property
+    }
+
+    return default
 }
