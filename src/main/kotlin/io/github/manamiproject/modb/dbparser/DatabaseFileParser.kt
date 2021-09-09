@@ -14,7 +14,7 @@ public class DatabaseFileParser<T>(
 ) : ExternalResourceParser<T>, JsonParser<T> by fileParser {
 
     override fun parse(url: URL): List<T> {
-        log.info("Downloading database file from [{}]", url)
+        log.info { "Downloading database file from [$url]" }
 
         val response = httpClient.get(url)
 
@@ -26,7 +26,7 @@ public class DatabaseFileParser<T>(
     }
 
     override fun parse(file: RegularFile): List<T> {
-        log.info("Reading database file")
+        log.info { "Reading database file" }
 
         return when {
             !file.regularFileExists() -> throw IllegalStateException("The given path does not exist or is not a regular file: [${file.toAbsolutePath()}]")

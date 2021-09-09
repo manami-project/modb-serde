@@ -11,7 +11,7 @@ public class AnimeDatabaseJsonStringParser : JsonParser<Anime> {
     override fun parse(json: String): List<Anime> {
         require(json.isNotBlank()) { "Given json string must not be blank." }
 
-        log.info("Parsing database")
+        log.info { "Parsing database" }
 
         return Json.parseJson<DatabaseData>(json)!!.data.map {
             Anime(

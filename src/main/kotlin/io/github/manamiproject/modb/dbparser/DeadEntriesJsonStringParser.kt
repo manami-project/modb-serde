@@ -9,7 +9,7 @@ public class DeadEntriesJsonStringParser : JsonParser<AnimeId> {
     override fun parse(json: String): List<AnimeId> {
         require(json.isNotBlank()) { "Given json string must not be blank." }
 
-        log.info("Parsing dead entries")
+        log.info { "Parsing dead entries" }
 
         val jsonDocument: DeadEntriesDocument = Json.parseJson(json)!!
         val deadEntries = jsonDocument.deadEntries
