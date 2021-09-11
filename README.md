@@ -26,6 +26,7 @@ val deadEntriesFileParser = DatabaseFileParser<AnimeId>(fileParser = DeadEntries
 ```
 
 Now you can either parse the anime database file or a dead entries file by using a URL, a file or a JSON string.
+The parser can also handle zipped files, but the zip file must only contain a single JSON file.
 
 *Example:*
 
