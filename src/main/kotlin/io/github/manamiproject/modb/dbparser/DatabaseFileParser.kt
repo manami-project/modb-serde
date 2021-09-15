@@ -1,12 +1,13 @@
 package io.github.manamiproject.modb.dbparser
 
-import io.github.manamiproject.modb.core.extensions.*
+import io.github.manamiproject.modb.core.extensions.RegularFile
+import io.github.manamiproject.modb.core.extensions.fileSuffix
+import io.github.manamiproject.modb.core.extensions.readFile
+import io.github.manamiproject.modb.core.extensions.regularFileExists
 import io.github.manamiproject.modb.core.httpclient.DefaultHttpClient
 import io.github.manamiproject.modb.core.httpclient.HttpClient
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
-import java.io.*
 import java.net.URL
-import java.nio.file.Paths
 import java.util.zip.ZipFile
 
 public class DatabaseFileParser<T>(
