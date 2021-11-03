@@ -4,6 +4,10 @@ import io.github.manamiproject.modb.core.Json
 import io.github.manamiproject.modb.core.config.AnimeId
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
 
+/**
+ * Can parse dead entry files from manami-project anime-offline-database.
+ * @since 1.0.0
+ */
 public class DeadEntriesJsonStringParser : JsonParser<AnimeId> {
 
     override fun parse(json: String): List<AnimeId> {

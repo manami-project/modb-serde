@@ -10,6 +10,12 @@ import io.github.manamiproject.modb.core.logging.LoggerDelegate
 import java.net.URL
 import java.util.zip.ZipFile
 
+/**
+ * + Can download JSON files from manami-project anime-offline-database via HTTPS and parse them.
+ * + Can parse the files from manami-project anime-offline-database as local JSON file.
+ * + Can parse the files from manami-project anime-offline-database as local JSON file if it is provided as zip file.
+ * @since 1.0.0
+ */
 public class DatabaseFileParser<T>(
     private val httpClient: HttpClient = DefaultHttpClient(),
     private val fileParser: JsonParser<T>

@@ -6,6 +6,10 @@ import io.github.manamiproject.modb.core.models.Anime
 import io.github.manamiproject.modb.core.models.AnimeSeason
 import java.net.URI
 
+/**
+ * Can parse the manami-project anime-offline-database JSON as [String].
+ * @since 1.0.0
+ */
 public class AnimeDatabaseJsonStringParser : JsonParser<Anime> {
 
     override fun parse(json: String): List<Anime> {
