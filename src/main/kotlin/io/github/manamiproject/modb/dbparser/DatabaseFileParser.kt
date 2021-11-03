@@ -11,9 +11,24 @@ import java.net.URL
 import java.util.zip.ZipFile
 
 /**
+ * # What it does
  * + Can download JSON files from manami-project anime-offline-database via HTTPS and parse them.
  * + Can parse the files from manami-project anime-offline-database as local JSON file.
  * + Can parse the files from manami-project anime-offline-database as local JSON file if it is provided as zip file.
+ *
+ * # Usage
+ * Wrap an instance of [JsonParser] in a [DatabaseFileParser] to be able to parse a [URL] or a [RegularFile]
+ * ```
+ * val animeDatabaseFileParser = DatabaseFileParser<Anime>(fileParser = AnimeDatabaseJsonStringParser())
+ * val deadEntriesFileParser = DatabaseFileParser<AnimeId>(fileParser = DeadEntriesJsonStringParser())
+ * ```
+ * Now you can either parse the anime database file or a dead entries file by using a URL, a file or a JSON string.
+ * The parser can also handle zipped files, but the zip file must only contain a single JSON file.
+ * **Example:**
+ * ```
+ * val parser = DatabaseFileParser<Anime>(fileParser = AnimeDatabaseJsonStringParser())
+ * val allAnime: List<Anime> = parser.parse(URL("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database-minified.json"))
+ * ```
  * @since 1.0.0
  */
 public class DatabaseFileParser<T>(
