@@ -2,7 +2,10 @@ package io.github.manamiproject.modb.dbparser
 
 import io.github.manamiproject.modb.core.Json
 import io.github.manamiproject.modb.core.config.AnimeId
+import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_CPU
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 /**
  * Can parse dead entry files from manami-project anime-offline-database.
@@ -10,19 +13,21 @@ import io.github.manamiproject.modb.core.logging.LoggerDelegate
  */
 public class DeadEntriesJsonStringParser : JsonParser<AnimeId> {
 
-    override fun parse(json: String): List<AnimeId> {
+    @Deprecated("Use coroutine instead",
+        ReplaceWith("runBlocking { parseSuspendable(json) }", "kotlinx.coroutines.runBlocking")
+    )
+    override fun parse(json: String): List<AnimeId> = runBlocking {
+        parseSuspendable(json)
+    }
+
+    override suspend fun parseSuspendable(json: String): List<AnimeId> = withContext(LIMITED_CPU) {
         require(json.isNotBlank()) { "Given json string must not be blank." }
 
         log.info { "Parsing dead entries" }
 
-        val jsonDocument: DeadEntriesDocument = Json.parseJson(json)!!
-        val deadEntries = jsonDocument.deadEntries
+        val jsonDocument: DeadEntriesDocument = Json.parseJsonSuspendable(json)!!
 
-        if (deadEntries.isEmpty()) {
-            return emptyList()
-        }
-
-        return deadEntries
+        return@withContext jsonDocument.deadEntries
     }
 
     private companion object {

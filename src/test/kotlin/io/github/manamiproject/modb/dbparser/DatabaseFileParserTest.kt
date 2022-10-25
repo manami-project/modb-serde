@@ -7,10 +7,10 @@ import io.github.manamiproject.modb.core.httpclient.HttpResponse
 import io.github.manamiproject.modb.core.models.Anime
 import io.github.manamiproject.modb.core.models.AnimeSeason
 import io.github.manamiproject.modb.test.*
+import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import java.net.URI
 import java.net.URL
 
@@ -23,17 +23,17 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
         fun `throws exception if the response code is not 200`() {
             // given
             val testHttpClient = object: HttpClient by TestHttpClient {
-                override fun get(url: URL, headers: Map<String, Collection<String>>, retryWith: String): HttpResponse = HttpResponse(500, "ERROR")
+                override suspend fun getSuspedable(url: URL, headers: Map<String, Collection<String>>, retryWith: String): HttpResponse = HttpResponse(500, "ERROR")
             }
 
             val defaultDatabaseFileParser = DatabaseFileParser(
                 httpClient = testHttpClient,
-                fileParser = TestDatabaseFileParser
+                fileParser = TestDatabaseFileParser,
             )
 
             // when
-            val result = assertThrows<IllegalStateException> {
-                defaultDatabaseFileParser.parse(URL("http://localhost$port/anime-offline-database.json"))
+            val result = exceptionExpected<IllegalStateException> {
+                defaultDatabaseFileParser.parseSuspendable(URL("http://localhost$port/anime-offline-database.json"))
             }
 
             // then
@@ -44,17 +44,17 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
         fun `throws exception if the response body is blank`() {
             // given
             val testHttpClient = object: HttpClient by TestHttpClient {
-                override fun get(url: URL, headers: Map<String, Collection<String>>, retryWith: String): HttpResponse = HttpResponse(200, EMPTY)
+                override suspend fun getSuspedable(url: URL, headers: Map<String, Collection<String>>, retryWith: String): HttpResponse = HttpResponse(200, EMPTY)
             }
 
             val defaultDatabaseFileParser = DatabaseFileParser(
                 httpClient = testHttpClient,
-                fileParser = TestDatabaseFileParser
+                fileParser = TestDatabaseFileParser,
             )
 
             // when
-            val result = assertThrows<IllegalStateException> {
-                defaultDatabaseFileParser.parse(URL("http://localhost$port/anime-offline-database.json"))
+            val result = exceptionExpected<IllegalStateException> {
+                defaultDatabaseFileParser.parseSuspendable(URL("http://localhost$port/anime-offline-database.json"))
             }
 
             // then
@@ -65,23 +65,25 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
         fun `correctly download and parse database file`() {
             // given
             val testHttpClient = object: HttpClient by TestHttpClient {
-                override fun get(url: URL, headers: Map<String, Collection<String>>, retryWith: String): HttpResponse = HttpResponse(
+                override suspend fun getSuspedable(url: URL, headers: Map<String, Collection<String>>, retryWith: String): HttpResponse = HttpResponse(
                     code = 200,
-                    body = loadTestResource("test_db_for_deserialization.json")
+                    body = loadTestResource("test_db_for_deserialization.json"),
                 )
             }
 
             val testDatabaseFileParser = object: JsonParser<Int> by TestDatabaseFileParser {
-                override fun parse(json: String): List<Int> = listOf(1, 2, 3, 4, 5)
+                override suspend fun parseSuspendable(json: String): List<Int> = listOf(1, 2, 3, 4, 5)
             }
 
             val defaultDatabaseFileParser = DatabaseFileParser(
                 httpClient = testHttpClient,
-                fileParser = testDatabaseFileParser
+                fileParser = testDatabaseFileParser,
             )
 
             // when
-            val result = defaultDatabaseFileParser.parse(URL("http://localhost$port/anime-offline-database.json"))
+            val result = runBlocking {
+                defaultDatabaseFileParser.parseSuspendable(URL("http://localhost$port/anime-offline-database.json"))
+            }
 
             // then
             assertThat(result).containsExactlyInAnyOrder(1, 2, 3, 4, 5)
@@ -97,12 +99,12 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
                 // given
                 val defaultDatabaseFileParser = DatabaseFileParser(
                     httpClient = TestHttpClient,
-                    fileParser = TestDatabaseFileParser
+                    fileParser = TestDatabaseFileParser,
                 )
 
                 // when
-                val result = assertThrows<IllegalArgumentException> {
-                    defaultDatabaseFileParser.parse(tempDir)
+                val result = exceptionExpected<IllegalArgumentException> {
+                    defaultDatabaseFileParser.parseSuspendable(tempDir)
                 }
 
                 // then
@@ -116,13 +118,13 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
                 // given
                 val defaultDatabaseFileParser = DatabaseFileParser(
                     httpClient = TestHttpClient,
-                    fileParser = TestDatabaseFileParser
+                    fileParser = TestDatabaseFileParser,
                 )
                 val testFile = tempDir.resolve("anime-offline-database.json")
 
                 // when
-                val result = assertThrows<IllegalArgumentException> {
-                    defaultDatabaseFileParser.parse(testFile)
+                val result = exceptionExpected<IllegalArgumentException> {
+                    defaultDatabaseFileParser.parseSuspendable(testFile)
                 }
 
                 // then
@@ -136,12 +138,12 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
                 // given
                 val defaultDatabaseFileParser = DatabaseFileParser(
                     httpClient = TestHttpClient,
-                    fileParser = TestDatabaseFileParser
+                    fileParser = TestDatabaseFileParser,
                 )
 
                 // when
-                val result = assertThrows<IllegalArgumentException> {
-                    defaultDatabaseFileParser.parse(testResource("logback-test.xml"))
+                val result = exceptionExpected<IllegalArgumentException> {
+                    defaultDatabaseFileParser.parseSuspendable(testResource("logback-test.xml"))
                 }
 
                 // then
@@ -155,12 +157,12 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
                 // given
                 val defaultDatabaseFileParser = DatabaseFileParser(
                     httpClient = TestHttpClient,
-                    fileParser = TestDatabaseFileParser
+                    fileParser = TestDatabaseFileParser,
                 )
 
                 // when
-                val result = assertThrows<IllegalArgumentException> {
-                    defaultDatabaseFileParser.parse(testResource("non-json.zip"))
+                val result = exceptionExpected<IllegalArgumentException> {
+                    defaultDatabaseFileParser.parseSuspendable(testResource("non-json.zip"))
                 }
 
                 // then
@@ -174,12 +176,12 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
                 // given
                 val defaultDatabaseFileParser = DatabaseFileParser(
                     httpClient = TestHttpClient,
-                    fileParser = TestDatabaseFileParser
+                    fileParser = TestDatabaseFileParser,
                 )
 
                 // when
-                val result = assertThrows<IllegalArgumentException> {
-                    defaultDatabaseFileParser.parse(testResource("2_files.zip"))
+                val result = exceptionExpected<IllegalArgumentException> {
+                    defaultDatabaseFileParser.parseSuspendable(testResource("2_files.zip"))
                 }
 
                 // then
@@ -191,16 +193,18 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
         fun `correctly parse database file`() {
             // given
             val testDatabaseFileParser = object: JsonParser<Int> by TestDatabaseFileParser {
-                override fun parse(json: String): List<Int> = listOf(1, 2, 4, 5)
+                override suspend fun parseSuspendable(json: String): List<Int> = listOf(1, 2, 4, 5)
             }
 
             val defaultDatabaseFileParser = DatabaseFileParser(
                 httpClient = TestHttpClient,
-                fileParser = testDatabaseFileParser
+                fileParser = testDatabaseFileParser,
             )
 
             // when
-            val result = defaultDatabaseFileParser.parse(testResource("test_db_for_deserialization.json"))
+            val result = runBlocking {
+                defaultDatabaseFileParser.parseSuspendable(testResource("test_db_for_deserialization.json"))
+            }
 
             // then
             assertThat(result).containsExactlyInAnyOrder(1, 2, 4, 5)
@@ -386,11 +390,13 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
 
             val defaultDatabaseFileParser = DatabaseFileParser(
                 httpClient = TestHttpClient,
-                fileParser = AnimeDatabaseJsonStringParser()
+                fileParser = AnimeDatabaseJsonStringParser(),
             )
 
             // when
-            val result = defaultDatabaseFileParser.parse(testResource("test_db_for_deserialization.zip"))
+            val result = runBlocking {
+                defaultDatabaseFileParser.parseSuspendable(testResource("test_db_for_deserialization.zip"))
+            }
 
             // then
             assertThat(result).containsAll(expectedEntries)

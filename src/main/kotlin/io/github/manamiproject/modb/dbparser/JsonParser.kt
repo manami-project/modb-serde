@@ -11,5 +11,14 @@ public interface JsonParser<T> {
      * @since 2.0.0
      * @return [List] of objects of type [T]
      */
+    @Deprecated("Use coroutine instead")
     public fun parse(json: String): List<T>
+
+    /**
+     * Parses a valid json [String] to a list of objects of type [T].
+     * Requires the JSON the have an array as root object.
+     * @since 4.0.0
+     * @return [List] of objects of type [T]
+     */
+    public suspend fun parseSuspendable(json: String): List<T>
 }
