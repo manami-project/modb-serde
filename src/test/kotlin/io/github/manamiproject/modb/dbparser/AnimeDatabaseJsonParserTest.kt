@@ -3,10 +3,11 @@ package io.github.manamiproject.modb.dbparser
 import io.github.manamiproject.modb.core.extensions.EMPTY
 import io.github.manamiproject.modb.core.models.Anime
 import io.github.manamiproject.modb.core.models.AnimeSeason
+import io.github.manamiproject.modb.test.exceptionExpected
 import io.github.manamiproject.modb.test.loadTestResource
+import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import java.net.URI
 
 internal class AnimeDatabaseJsonParserTest {
@@ -17,8 +18,8 @@ internal class AnimeDatabaseJsonParserTest {
         val defaultDatabaseFileParser = AnimeDatabaseJsonStringParser()
 
         // when
-        val result = assertThrows<IllegalArgumentException> {
-            defaultDatabaseFileParser.parse(EMPTY)
+        val result = exceptionExpected<IllegalArgumentException> {
+            defaultDatabaseFileParser.parseSuspendable(EMPTY)
         }
 
         // then
@@ -31,8 +32,8 @@ internal class AnimeDatabaseJsonParserTest {
         val defaultDatabaseFileParser = AnimeDatabaseJsonStringParser()
 
         // when
-        val result = assertThrows<IllegalArgumentException> {
-            defaultDatabaseFileParser.parse("    ")
+        val result = exceptionExpected<IllegalArgumentException> {
+            defaultDatabaseFileParser.parseSuspendable("    ")
         }
 
         // then
@@ -220,7 +221,9 @@ internal class AnimeDatabaseJsonParserTest {
         )
 
         // when
-        val result = defaultDatabaseFileParser.parse(loadTestResource("test_db_for_deserialization.json"))
+        val result = runBlocking {
+            defaultDatabaseFileParser.parseSuspendable(loadTestResource("test_db_for_deserialization.json"))
+        }
 
         // then
         assertThat(result).containsAll(expectedEntries)

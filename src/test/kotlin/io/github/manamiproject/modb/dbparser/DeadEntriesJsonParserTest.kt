@@ -1,9 +1,10 @@
 package io.github.manamiproject.modb.dbparser
 
 import io.github.manamiproject.modb.core.extensions.EMPTY
+import io.github.manamiproject.modb.test.exceptionExpected
+import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class DeadEntriesJsonParserTest {
 
@@ -13,8 +14,8 @@ internal class DeadEntriesJsonParserTest {
         val deadEntriesFileParser = DeadEntriesJsonStringParser()
 
         // when
-        val result = assertThrows<IllegalArgumentException> {
-            deadEntriesFileParser.parse(EMPTY)
+        val result = exceptionExpected<IllegalArgumentException> {
+            deadEntriesFileParser.parseSuspendable(EMPTY)
         }
 
         // then
@@ -27,8 +28,8 @@ internal class DeadEntriesJsonParserTest {
         val deadEntriesFileParser = DeadEntriesJsonStringParser()
 
         // when
-        val result = assertThrows<IllegalArgumentException> {
-            deadEntriesFileParser.parse("    ")
+        val result = exceptionExpected<IllegalArgumentException> {
+            deadEntriesFileParser.parseSuspendable("    ")
         }
 
         // then
@@ -46,7 +47,9 @@ internal class DeadEntriesJsonParserTest {
         """.trimIndent()
 
         // when
-        val result = deadEntriesFileParser.parse(json)
+        val result = runBlocking {
+            deadEntriesFileParser.parseSuspendable(json)
+        }
 
         // then
         assertThat(result).isEmpty()
@@ -69,7 +72,9 @@ internal class DeadEntriesJsonParserTest {
         """.trimIndent()
 
         // when
-        val result = deadEntriesFileParser.parse(json)
+        val result = runBlocking {
+            deadEntriesFileParser.parseSuspendable(json)
+        }
 
         // then
         assertThat(result).containsExactlyInAnyOrder("kj42fc5--", "lkn6--k44", "l2ht33--1", "1kj5g--41", "3jl253vv9")

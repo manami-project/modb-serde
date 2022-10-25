@@ -1,12 +1,16 @@
 package io.github.manamiproject.modb.dbparser
 
+import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_CPU
 import io.github.manamiproject.modb.core.extensions.RegularFile
 import io.github.manamiproject.modb.core.extensions.fileSuffix
-import io.github.manamiproject.modb.core.extensions.readFile
+import io.github.manamiproject.modb.core.extensions.readFileSuspendable
 import io.github.manamiproject.modb.core.extensions.regularFileExists
 import io.github.manamiproject.modb.core.httpclient.DefaultHttpClient
 import io.github.manamiproject.modb.core.httpclient.HttpClient
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.net.URL
 import java.util.zip.ZipFile
 
@@ -36,34 +40,48 @@ public class DatabaseFileParser<T>(
     private val fileParser: JsonParser<T>
 ) : ExternalResourceParser<T>, JsonParser<T> by fileParser {
 
-    override fun parse(url: URL): List<T> {
+    @Deprecated("Use coroutine instead",
+        ReplaceWith("runBlocking { parseSuspendable(url) }", "kotlinx.coroutines.runBlocking")
+    )
+    override fun parse(url: URL): List<T> = runBlocking {
+        parseSuspendable(url)
+    }
+
+    override suspend fun parseSuspendable(url: URL): List<T> = withContext(LIMITED_CPU) {
         log.info { "Downloading database file from [$url]" }
 
-        val response = httpClient.get(url)
+        val response = httpClient.getSuspedable(url)
 
-        return when {
+        return@withContext when {
             !response.isOk() -> throw IllegalStateException("Error downloading database file: HTTP response code was: [${response.code}]")
             response.body.isBlank() -> throw IllegalStateException("Error downloading database file: The response body was blank.")
-            else -> fileParser.parse(response.body)
+            else -> fileParser.parseSuspendable(response.body)
         }
     }
 
-    override fun parse(file: RegularFile): List<T> {
+    @Deprecated("Use coroutine instead",
+        ReplaceWith("runBlocking { parseSuspendable(file) }", "kotlinx.coroutines.runBlocking")
+    )
+    override fun parse(file: RegularFile): List<T> = runBlocking {
+        parseSuspendable(file)
+    }
+
+    override suspend fun parseSuspendable(file: RegularFile): List<T> = withContext(LIMITED_CPU) {
         require(file.regularFileExists()) { "The given path does not exist or is not a regular file: [${file.toAbsolutePath()}]" }
 
         val content =  when(file.fileSuffix()) {
-            "json" -> file.readFile()
+            "json" -> file.readFileSuspendable()
             "zip" -> readZip(file)
             else -> throw IllegalArgumentException("File is neither JSON nor zip file")
         }
 
         log.info { "Reading database file" }
 
-        return fileParser.parse(content)
+        return@withContext fileParser.parseSuspendable(content)
     }
 
-    private fun readZip(file: RegularFile): String {
-        return ZipFile(file.toAbsolutePath().toString()).use { zip ->
+    private suspend fun readZip(file: RegularFile): String = withContext(IO) {
+        return@withContext ZipFile(file.toAbsolutePath().toString()).use { zip ->
             val zipEntries = zip.entries().toList()
             require(zipEntries.size == 1) { "The zip file contains more than one file." }
 
