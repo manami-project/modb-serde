@@ -2,6 +2,7 @@ package io.github.manamiproject.modb.dbparser
 
 import io.github.manamiproject.modb.core.Json
 import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_CPU
+import io.github.manamiproject.modb.core.extensions.EMPTY
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
 import io.github.manamiproject.modb.core.models.Anime
 import io.github.manamiproject.modb.core.models.AnimeSeason
@@ -15,9 +16,7 @@ import java.net.URI
  */
 public class AnimeDatabaseJsonStringParser : JsonParser<Anime> {
 
-    @Deprecated("Use coroutine instead",
-        ReplaceWith("runBlocking { parseSuspendable(json) }", "kotlinx.coroutines.runBlocking")
-    )
+    @Deprecated("Use coroutine instead", ReplaceWith(EMPTY))
     override fun parse(json: String): List<Anime> = runBlocking {
         parseSuspendable(json)
     }
