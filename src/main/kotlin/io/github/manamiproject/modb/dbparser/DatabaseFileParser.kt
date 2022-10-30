@@ -1,10 +1,7 @@
 package io.github.manamiproject.modb.dbparser
 
 import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_CPU
-import io.github.manamiproject.modb.core.extensions.RegularFile
-import io.github.manamiproject.modb.core.extensions.fileSuffix
-import io.github.manamiproject.modb.core.extensions.readFileSuspendable
-import io.github.manamiproject.modb.core.extensions.regularFileExists
+import io.github.manamiproject.modb.core.extensions.*
 import io.github.manamiproject.modb.core.httpclient.DefaultHttpClient
 import io.github.manamiproject.modb.core.httpclient.HttpClient
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
@@ -37,12 +34,10 @@ import java.util.zip.ZipFile
  */
 public class DatabaseFileParser<T>(
     private val httpClient: HttpClient = DefaultHttpClient(),
-    private val fileParser: JsonParser<T>
+    private val fileParser: JsonParser<T>,
 ) : ExternalResourceParser<T>, JsonParser<T> by fileParser {
 
-    @Deprecated("Use coroutine instead",
-        ReplaceWith("runBlocking { parseSuspendable(url) }", "kotlinx.coroutines.runBlocking")
-    )
+    @Deprecated("Use coroutine instead", ReplaceWith(EMPTY))
     override fun parse(url: URL): List<T> = runBlocking {
         parseSuspendable(url)
     }
@@ -59,9 +54,7 @@ public class DatabaseFileParser<T>(
         }
     }
 
-    @Deprecated("Use coroutine instead",
-        ReplaceWith("runBlocking { parseSuspendable(file) }", "kotlinx.coroutines.runBlocking")
-    )
+    @Deprecated("Use coroutine instead", ReplaceWith(EMPTY))
     override fun parse(file: RegularFile): List<T> = runBlocking {
         parseSuspendable(file)
     }
