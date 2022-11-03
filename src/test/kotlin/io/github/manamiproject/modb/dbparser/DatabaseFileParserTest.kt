@@ -23,7 +23,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
         fun `throws exception if the response code is not 200`() {
             // given
             val testHttpClient = object: HttpClient by TestHttpClient {
-                override suspend fun getSuspedable(url: URL, headers: Map<String, Collection<String>>, retryWith: String): HttpResponse = HttpResponse(500, "ERROR")
+                override suspend fun get(url: URL, headers: Map<String, Collection<String>>, retryWith: String): HttpResponse = HttpResponse(500, "ERROR")
             }
 
             val defaultDatabaseFileParser = DatabaseFileParser(
@@ -33,7 +33,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
 
             // when
             val result = exceptionExpected<IllegalStateException> {
-                defaultDatabaseFileParser.parseSuspendable(URL("http://localhost$port/anime-offline-database.json"))
+                defaultDatabaseFileParser.parse(URL("http://localhost$port/anime-offline-database.json"))
             }
 
             // then
@@ -44,7 +44,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
         fun `throws exception if the response body is blank`() {
             // given
             val testHttpClient = object: HttpClient by TestHttpClient {
-                override suspend fun getSuspedable(url: URL, headers: Map<String, Collection<String>>, retryWith: String): HttpResponse = HttpResponse(200, EMPTY)
+                override suspend fun get(url: URL, headers: Map<String, Collection<String>>, retryWith: String): HttpResponse = HttpResponse(200, EMPTY)
             }
 
             val defaultDatabaseFileParser = DatabaseFileParser(
@@ -54,7 +54,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
 
             // when
             val result = exceptionExpected<IllegalStateException> {
-                defaultDatabaseFileParser.parseSuspendable(URL("http://localhost$port/anime-offline-database.json"))
+                defaultDatabaseFileParser.parse(URL("http://localhost$port/anime-offline-database.json"))
             }
 
             // then
@@ -65,14 +65,14 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
         fun `correctly download and parse database file`() {
             // given
             val testHttpClient = object: HttpClient by TestHttpClient {
-                override suspend fun getSuspedable(url: URL, headers: Map<String, Collection<String>>, retryWith: String): HttpResponse = HttpResponse(
+                override suspend fun get(url: URL, headers: Map<String, Collection<String>>, retryWith: String): HttpResponse = HttpResponse(
                     code = 200,
                     body = loadTestResource("test_db_for_deserialization.json"),
                 )
             }
 
             val testDatabaseFileParser = object: JsonParser<Int> by TestDatabaseFileParser {
-                override suspend fun parseSuspendable(json: String): List<Int> = listOf(1, 2, 3, 4, 5)
+                override suspend fun parse(json: String): List<Int> = listOf(1, 2, 3, 4, 5)
             }
 
             val defaultDatabaseFileParser = DatabaseFileParser(
@@ -82,7 +82,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
 
             // when
             val result = runBlocking {
-                defaultDatabaseFileParser.parseSuspendable(URL("http://localhost$port/anime-offline-database.json"))
+                defaultDatabaseFileParser.parse(URL("http://localhost$port/anime-offline-database.json"))
             }
 
             // then
@@ -104,7 +104,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
 
                 // when
                 val result = exceptionExpected<IllegalArgumentException> {
-                    defaultDatabaseFileParser.parseSuspendable(tempDir)
+                    defaultDatabaseFileParser.parse(tempDir)
                 }
 
                 // then
@@ -124,7 +124,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
 
                 // when
                 val result = exceptionExpected<IllegalArgumentException> {
-                    defaultDatabaseFileParser.parseSuspendable(testFile)
+                    defaultDatabaseFileParser.parse(testFile)
                 }
 
                 // then
@@ -143,7 +143,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
 
                 // when
                 val result = exceptionExpected<IllegalArgumentException> {
-                    defaultDatabaseFileParser.parseSuspendable(testResource("logback-test.xml"))
+                    defaultDatabaseFileParser.parse(testResource("logback-test.xml"))
                 }
 
                 // then
@@ -162,7 +162,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
 
                 // when
                 val result = exceptionExpected<IllegalArgumentException> {
-                    defaultDatabaseFileParser.parseSuspendable(testResource("non-json.zip"))
+                    defaultDatabaseFileParser.parse(testResource("non-json.zip"))
                 }
 
                 // then
@@ -181,7 +181,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
 
                 // when
                 val result = exceptionExpected<IllegalArgumentException> {
-                    defaultDatabaseFileParser.parseSuspendable(testResource("2_files.zip"))
+                    defaultDatabaseFileParser.parse(testResource("2_files.zip"))
                 }
 
                 // then
@@ -193,7 +193,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
         fun `correctly parse database file`() {
             // given
             val testDatabaseFileParser = object: JsonParser<Int> by TestDatabaseFileParser {
-                override suspend fun parseSuspendable(json: String): List<Int> = listOf(1, 2, 4, 5)
+                override suspend fun parse(json: String): List<Int> = listOf(1, 2, 4, 5)
             }
 
             val defaultDatabaseFileParser = DatabaseFileParser(
@@ -203,7 +203,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
 
             // when
             val result = runBlocking {
-                defaultDatabaseFileParser.parseSuspendable(testResource("test_db_for_deserialization.json"))
+                defaultDatabaseFileParser.parse(testResource("test_db_for_deserialization.json"))
             }
 
             // then
@@ -395,7 +395,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
 
             // when
             val result = runBlocking {
-                defaultDatabaseFileParser.parseSuspendable(testResource("test_db_for_deserialization.zip"))
+                defaultDatabaseFileParser.parse(testResource("test_db_for_deserialization.zip"))
             }
 
             // then

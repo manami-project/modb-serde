@@ -19,7 +19,7 @@ internal class AnimeDatabaseJsonParserTest {
 
         // when
         val result = exceptionExpected<IllegalArgumentException> {
-            defaultDatabaseFileParser.parseSuspendable(EMPTY)
+            defaultDatabaseFileParser.parse(EMPTY)
         }
 
         // then
@@ -33,7 +33,7 @@ internal class AnimeDatabaseJsonParserTest {
 
         // when
         val result = exceptionExpected<IllegalArgumentException> {
-            defaultDatabaseFileParser.parseSuspendable("    ")
+            defaultDatabaseFileParser.parse("    ")
         }
 
         // then
@@ -222,7 +222,7 @@ internal class AnimeDatabaseJsonParserTest {
 
         // when
         val result = runBlocking {
-            defaultDatabaseFileParser.parseSuspendable(loadTestResource("test_db_for_deserialization.json"))
+            defaultDatabaseFileParser.parse(loadTestResource("test_db_for_deserialization.json"))
         }
 
         // then
