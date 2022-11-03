@@ -13,19 +13,12 @@ import kotlinx.coroutines.withContext
  */
 public class DeadEntriesJsonStringParser : JsonParser<AnimeId> {
 
-    @Deprecated("Use coroutine instead",
-        ReplaceWith("runBlocking { parseSuspendable(json) }", "kotlinx.coroutines.runBlocking")
-    )
-    override fun parse(json: String): List<AnimeId> = runBlocking {
-        parseSuspendable(json)
-    }
-
-    override suspend fun parseSuspendable(json: String): List<AnimeId> = withContext(LIMITED_CPU) {
+    override suspend fun parse(json: String): List<AnimeId> = withContext(LIMITED_CPU) {
         require(json.isNotBlank()) { "Given json string must not be blank." }
 
         log.info { "Parsing dead entries" }
 
-        val jsonDocument: DeadEntriesDocument = Json.parseJsonSuspendable(json)!!
+        val jsonDocument: DeadEntriesDocument = Json.parseJson(json)!!
 
         return@withContext jsonDocument.deadEntries
     }

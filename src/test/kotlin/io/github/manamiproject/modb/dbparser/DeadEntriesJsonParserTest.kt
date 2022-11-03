@@ -15,7 +15,7 @@ internal class DeadEntriesJsonParserTest {
 
         // when
         val result = exceptionExpected<IllegalArgumentException> {
-            deadEntriesFileParser.parseSuspendable(EMPTY)
+            deadEntriesFileParser.parse(EMPTY)
         }
 
         // then
@@ -29,7 +29,7 @@ internal class DeadEntriesJsonParserTest {
 
         // when
         val result = exceptionExpected<IllegalArgumentException> {
-            deadEntriesFileParser.parseSuspendable("    ")
+            deadEntriesFileParser.parse("    ")
         }
 
         // then
@@ -48,7 +48,7 @@ internal class DeadEntriesJsonParserTest {
 
         // when
         val result = runBlocking {
-            deadEntriesFileParser.parseSuspendable(json)
+            deadEntriesFileParser.parse(json)
         }
 
         // then
@@ -73,7 +73,7 @@ internal class DeadEntriesJsonParserTest {
 
         // when
         val result = runBlocking {
-            deadEntriesFileParser.parseSuspendable(json)
+            deadEntriesFileParser.parse(json)
         }
 
         // then
