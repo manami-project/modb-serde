@@ -1,6 +1,7 @@
 package io.github.manamiproject.modb.dbparser
 
 /**
+ * Parses Json to objects.
  * @since 2.0.0
  */
 public interface JsonParser<T> {
