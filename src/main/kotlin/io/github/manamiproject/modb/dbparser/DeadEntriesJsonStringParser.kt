@@ -4,7 +4,6 @@ import io.github.manamiproject.modb.core.Json
 import io.github.manamiproject.modb.core.config.AnimeId
 import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_CPU
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 /**

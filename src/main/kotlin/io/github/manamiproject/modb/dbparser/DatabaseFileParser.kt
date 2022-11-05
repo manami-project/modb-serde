@@ -30,6 +30,8 @@ import java.util.zip.ZipFile
  * val allAnime: List<Anime> = parser.parse(URL("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database-minified.json"))
  * ```
  * @since 1.0.0
+ * @param httpClient Used to download given [URL]s
+ * @param fileParser File parser for either the database or dead entries file.
  */
 public class DatabaseFileParser<T>(
     private val httpClient: HttpClient = DefaultHttpClient(),
