@@ -7,9 +7,8 @@ import io.github.manamiproject.modb.test.shouldNotBeInvoked
 import java.net.URL
 
 internal object TestHttpClient : HttpClient {
-    override suspend fun executeRetryable(retryWith: String, func: suspend () -> HttpResponse): HttpResponse = shouldNotBeInvoked()
-    override suspend fun get(url: URL, headers: Map<String, Collection<String>>, retryWith: String): HttpResponse = shouldNotBeInvoked()
-    override suspend fun post(url: URL, requestBody: RequestBody, headers: Map<String, Collection<String>>, retryWith: String): HttpResponse = shouldNotBeInvoked()
+    override suspend fun get(url: URL, headers: Map<String, Collection<String>>): HttpResponse = shouldNotBeInvoked()
+    override suspend fun post(url: URL, requestBody: RequestBody, headers: Map<String, Collection<String>>): HttpResponse = shouldNotBeInvoked()
 }
 
 internal object TestDatabaseFileParser : JsonParser<Int> {
