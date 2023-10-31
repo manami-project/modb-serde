@@ -33,7 +33,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
 
             // when
             val result = exceptionExpected<IllegalStateException> {
-                defaultDatabaseFileParser.parse(URL("http://localhost$port/anime-offline-database.json"))
+                defaultDatabaseFileParser.parse(URI("http://localhost$port/anime-offline-database.json").toURL())
             }
 
             // then
@@ -54,7 +54,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
 
             // when
             val result = exceptionExpected<IllegalStateException> {
-                defaultDatabaseFileParser.parse(URL("http://localhost$port/anime-offline-database.json"))
+                defaultDatabaseFileParser.parse(URI("http://localhost$port/anime-offline-database.json").toURL())
             }
 
             // then
@@ -82,7 +82,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
                 )
 
                 // when
-                val result = defaultDatabaseFileParser.parse(URL("http://localhost$port/anime-offline-database.json"))
+                val result = defaultDatabaseFileParser.parse(URI("http://localhost$port/anime-offline-database.json").toURL())
 
                 // then
                 assertThat(result).containsExactlyInAnyOrder(1, 2, 3, 4, 5)
