@@ -45,8 +45,8 @@ public class DatabaseFileParser<T>(
 
         return@withContext when {
             !response.isOk() -> throw IllegalStateException("Error downloading database file: HTTP response code was: [${response.code}]")
-            response.body.isBlank() -> throw IllegalStateException("Error downloading database file: The response body was blank.")
-            else -> fileParser.parse(response.body)
+            response.bodyAsText.isBlank() -> throw IllegalStateException("Error downloading database file: The response body was blank.")
+            else -> fileParser.parse(response.bodyAsText)
         }
     }
 
