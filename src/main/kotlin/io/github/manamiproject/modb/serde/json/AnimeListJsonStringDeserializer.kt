@@ -1,4 +1,4 @@
-package io.github.manamiproject.modb.dbparser
+package io.github.manamiproject.modb.serde.json
 
 import io.github.manamiproject.modb.core.Json
 import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_CPU
@@ -9,17 +9,17 @@ import kotlinx.coroutines.withContext
 import java.net.URI
 
 /**
- * Can parse the manami-project anime-offline-database JSON as [String].
- * @since 1.0.0
+ * Can deserialize the manami-project anime-offline-database JSON provided as [String].
+ * @since 5.0.0
  */
-public class AnimeDatabaseJsonStringParser : JsonParser<Anime> {
+public class AnimeListJsonStringDeserializer : JsonDeserializer<List<Anime>> {
 
-    override suspend fun parse(json: String): List<Anime> = withContext(LIMITED_CPU) {
-        require(json.isNotBlank()) { "Given json string must not be blank." }
+    override suspend fun deserialize(json: String): List<Anime> = withContext(LIMITED_CPU) {
+        require(json.isNotBlank()) { "Given JSON string must not be blank." }
 
-        log.info { "Parsing database" }
+        log.info { "Deserializing database" }
 
-        return@withContext Json.parseJson<DatabaseData>(json)!!.data.map {
+        return@withContext Json.parseJson<DatabaseJsonObject>(json)!!.data.map {
             Anime(
                 _title = it.title,
                 type = Anime.Type.valueOf(it.type),
@@ -44,26 +44,3 @@ public class AnimeDatabaseJsonStringParser : JsonParser<Anime> {
         private val log by LoggerDelegate()
     }
 }
-
-internal data class DatabaseData(
-    val data: List<DatabaseEntry>
-)
-
-internal data class DatabaseEntry(
-    val sources: List<String>,
-    val title: String,
-    val type: String,
-    val episodes: Int,
-    val status: String,
-    val animeSeason: DatabaseEntryAnimeSeason,
-    val picture: String,
-    val thumbnail: String,
-    var synonyms: List<String>,
-    var relations: List<String>,
-    var tags: List<String>
-)
-
-internal data class DatabaseEntryAnimeSeason(
-    val season: String,
-    val year: Int?
-)

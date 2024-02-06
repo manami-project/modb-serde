@@ -1,4 +1,4 @@
-package io.github.manamiproject.modb.dbparser
+package io.github.manamiproject.modb.serde.json
 
 import io.github.manamiproject.modb.core.Json
 import io.github.manamiproject.modb.core.config.AnimeId
@@ -7,12 +7,12 @@ import io.github.manamiproject.modb.core.logging.LoggerDelegate
 import kotlinx.coroutines.withContext
 
 /**
- * Can parse dead entry files from manami-project anime-offline-database.
- * @since 1.0.0
+ * Can deserialize dead entry files from manami-project anime-offline-database.
+ * @since 5.0.0
  */
-public class DeadEntriesJsonStringParser : JsonParser<AnimeId> {
+public class DeadEntriesJsonStringDeserializer : JsonDeserializer<List<AnimeId>> {
 
-    override suspend fun parse(json: String): List<AnimeId> = withContext(LIMITED_CPU) {
+    override suspend fun deserialize(json: String): List<AnimeId> = withContext(LIMITED_CPU) {
         require(json.isNotBlank()) { "Given json string must not be blank." }
 
         log.info { "Parsing dead entries" }
