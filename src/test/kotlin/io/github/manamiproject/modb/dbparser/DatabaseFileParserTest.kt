@@ -68,7 +68,7 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
                 val testHttpClient = object: HttpClient by TestHttpClient {
                     override suspend fun get(url: URL, headers: Map<String, Collection<String>>): HttpResponse = HttpResponse(
                         code = 200,
-                        body = loadTestResource("test_db_for_deserialization.json").toByteArray(),
+                        body = loadTestResource<ByteArray>("test_db_for_deserialization.json"),
                     )
                 }
 
