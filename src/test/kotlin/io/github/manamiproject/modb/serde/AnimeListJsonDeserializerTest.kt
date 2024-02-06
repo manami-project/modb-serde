@@ -1,50 +1,51 @@
-package io.github.manamiproject.modb.dbparser
+package io.github.manamiproject.modb.serde
 
 import io.github.manamiproject.modb.core.extensions.EMPTY
 import io.github.manamiproject.modb.core.models.Anime
 import io.github.manamiproject.modb.core.models.AnimeSeason
+import io.github.manamiproject.modb.serde.json.AnimeListJsonStringDeserializer
 import io.github.manamiproject.modb.test.exceptionExpected
 import io.github.manamiproject.modb.test.loadTestResource
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
-import kotlin.test.Test
 import java.net.URI
+import kotlin.test.Test
 
-internal class AnimeDatabaseJsonParserTest {
+internal class AnimeListJsonDeserializerTest {
 
     @Test
     fun `throws exception if the given string is empty`() {
         // given
-        val defaultDatabaseFileParser = AnimeDatabaseJsonStringParser()
+        val defaultDatabaseFileParser = AnimeListJsonStringDeserializer()
 
         // when
         val result = exceptionExpected<IllegalArgumentException> {
-            defaultDatabaseFileParser.parse(EMPTY)
+            defaultDatabaseFileParser.deserialize(EMPTY)
         }
 
         // then
-        assertThat(result).hasMessage("Given json string must not be blank.")
+        assertThat(result).hasMessage("Given JSON string must not be blank.")
     }
 
     @Test
     fun `throws exception if the given string is blank`() {
         // given
-        val defaultDatabaseFileParser = AnimeDatabaseJsonStringParser()
+        val defaultDatabaseFileParser = AnimeListJsonStringDeserializer()
 
         // when
         val result = exceptionExpected<IllegalArgumentException> {
-            defaultDatabaseFileParser.parse("    ")
+            defaultDatabaseFileParser.deserialize("    ")
         }
 
         // then
-        assertThat(result).hasMessage("Given json string must not be blank.")
+        assertThat(result).hasMessage("Given JSON string must not be blank.")
     }
 
     @Test
     fun `correctly parse database string`() {
         runBlocking {
             // given
-            val defaultDatabaseFileParser = AnimeDatabaseJsonStringParser()
+            val defaultDatabaseFileParser = AnimeListJsonStringDeserializer()
 
             val expectedEntries = listOf(
                 Anime(
@@ -222,7 +223,7 @@ internal class AnimeDatabaseJsonParserTest {
             )
 
             // when
-            val result = defaultDatabaseFileParser.parse(loadTestResource("test_db_for_deserialization.json"))
+            val result = defaultDatabaseFileParser.deserialize(loadTestResource("json/deserialization/test_db_for_deserialization.json"))
 
             // then
             assertThat(result).containsAll(expectedEntries)

@@ -1,4 +1,4 @@
-package io.github.manamiproject.modb.dbparser
+package io.github.manamiproject.modb.serde
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import io.github.manamiproject.modb.core.extensions.EMPTY
@@ -6,18 +6,21 @@ import io.github.manamiproject.modb.core.httpclient.HttpClient
 import io.github.manamiproject.modb.core.httpclient.HttpResponse
 import io.github.manamiproject.modb.core.models.Anime
 import io.github.manamiproject.modb.core.models.AnimeSeason
+import io.github.manamiproject.modb.serde.json.AnimeListJsonStringDeserializer
+import io.github.manamiproject.modb.serde.json.DefaultExternalResourceJsonDeserializer
+import io.github.manamiproject.modb.serde.json.JsonDeserializer
 import io.github.manamiproject.modb.test.*
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
-import kotlin.test.Test
 import java.net.URI
 import java.net.URL
+import kotlin.test.Test
 
-internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by WireMockServerCreator() {
+internal class DefaultExternalResourceJsonDeserializerTest : MockServerTestCase<WireMockServer> by WireMockServerCreator() {
 
     @Nested
-    inner class ParseUrlTests {
+    inner class DeserializeUrlTests {
 
         @Test
         fun `throws exception if the response code is not 200`() {
@@ -26,14 +29,14 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
                 override suspend fun get(url: URL, headers: Map<String, Collection<String>>): HttpResponse = HttpResponse(500, "ERROR".toByteArray())
             }
 
-            val defaultDatabaseFileParser = DatabaseFileParser(
+            val defaultDatabaseFileParser = DefaultExternalResourceJsonDeserializer(
                 httpClient = testHttpClient,
-                fileParser = TestDatabaseFileParser,
+                jsonDeserializer = TestJsonDeserializer,
             )
 
             // when
             val result = exceptionExpected<IllegalStateException> {
-                defaultDatabaseFileParser.parse(URI("http://localhost$port/anime-offline-database.json").toURL())
+                defaultDatabaseFileParser.deserialize(URI("http://localhost$port/anime-offline-database.json").toURL())
             }
 
             // then
@@ -47,14 +50,14 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
                 override suspend fun get(url: URL, headers: Map<String, Collection<String>>): HttpResponse = HttpResponse(200, EMPTY.toByteArray())
             }
 
-            val defaultDatabaseFileParser = DatabaseFileParser(
+            val defaultDatabaseFileParser = DefaultExternalResourceJsonDeserializer(
                 httpClient = testHttpClient,
-                fileParser = TestDatabaseFileParser,
+                jsonDeserializer = TestJsonDeserializer,
             )
 
             // when
             val result = exceptionExpected<IllegalStateException> {
-                defaultDatabaseFileParser.parse(URI("http://localhost$port/anime-offline-database.json").toURL())
+                defaultDatabaseFileParser.deserialize(URI("http://localhost$port/anime-offline-database.json").toURL())
             }
 
             // then
@@ -68,21 +71,21 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
                 val testHttpClient = object: HttpClient by TestHttpClient {
                     override suspend fun get(url: URL, headers: Map<String, Collection<String>>): HttpResponse = HttpResponse(
                         code = 200,
-                        body = loadTestResource<ByteArray>("test_db_for_deserialization.json"),
+                        body = loadTestResource<ByteArray>("json/deserialization/test_db_for_deserialization.json"),
                     )
                 }
 
-                val testDatabaseFileParser = object: JsonParser<Int> by TestDatabaseFileParser {
-                    override suspend fun parse(json: String): List<Int> = listOf(1, 2, 3, 4, 5)
+                val testDatabaseFileParser = object: JsonDeserializer<List<Int>> by TestJsonDeserializer {
+                    override suspend fun deserialize(json: String): List<Int> = listOf(1, 2, 3, 4, 5)
                 }
 
-                val defaultDatabaseFileParser = DatabaseFileParser(
+                val defaultDatabaseFileParser = DefaultExternalResourceJsonDeserializer(
                     httpClient = testHttpClient,
-                    fileParser = testDatabaseFileParser,
+                    jsonDeserializer = testDatabaseFileParser,
                 )
 
                 // when
-                val result = defaultDatabaseFileParser.parse(URI("http://localhost$port/anime-offline-database.json").toURL())
+                val result = defaultDatabaseFileParser.deserialize(URI("http://localhost$port/anime-offline-database.json").toURL())
 
                 // then
                 assertThat(result).containsExactlyInAnyOrder(1, 2, 3, 4, 5)
@@ -91,20 +94,20 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
     }
 
     @Nested
-    inner class ParseRegularFileTests {
+    inner class DeserializeRegularFileTests {
 
         @Test
         fun `throws exception if the given path is a directory`() {
             tempDirectory {
                 // given
-                val defaultDatabaseFileParser = DatabaseFileParser(
+                val defaultDatabaseFileParser = DefaultExternalResourceJsonDeserializer(
                     httpClient = TestHttpClient,
-                    fileParser = TestDatabaseFileParser,
+                    jsonDeserializer = TestJsonDeserializer,
                 )
 
                 // when
                 val result = exceptionExpected<IllegalArgumentException> {
-                    defaultDatabaseFileParser.parse(tempDir)
+                    defaultDatabaseFileParser.deserialize(tempDir)
                 }
 
                 // then
@@ -116,15 +119,15 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
         fun `throws exception if the given file does not exist`() {
             tempDirectory {
                 // given
-                val defaultDatabaseFileParser = DatabaseFileParser(
+                val defaultDatabaseFileParser = DefaultExternalResourceJsonDeserializer(
                     httpClient = TestHttpClient,
-                    fileParser = TestDatabaseFileParser,
+                    jsonDeserializer = TestJsonDeserializer,
                 )
                 val testFile = tempDir.resolve("anime-offline-database.json")
 
                 // when
                 val result = exceptionExpected<IllegalArgumentException> {
-                    defaultDatabaseFileParser.parse(testFile)
+                    defaultDatabaseFileParser.deserialize(testFile)
                 }
 
                 // then
@@ -136,14 +139,14 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
         fun `throws exception if the given file is neither json nor zip file`() {
             tempDirectory {
                 // given
-                val defaultDatabaseFileParser = DatabaseFileParser(
+                val defaultDatabaseFileParser = DefaultExternalResourceJsonDeserializer(
                     httpClient = TestHttpClient,
-                    fileParser = TestDatabaseFileParser,
+                    jsonDeserializer = TestJsonDeserializer,
                 )
 
                 // when
                 val result = exceptionExpected<IllegalArgumentException> {
-                    defaultDatabaseFileParser.parse(testResource("logback-test.xml"))
+                    defaultDatabaseFileParser.deserialize(testResource("logback-test.xml"))
                 }
 
                 // then
@@ -155,14 +158,14 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
         fun `throws exception if the given zip file doesn't contain a JSON file`() {
             tempDirectory {
                 // given
-                val defaultDatabaseFileParser = DatabaseFileParser(
+                val defaultDatabaseFileParser = DefaultExternalResourceJsonDeserializer(
                     httpClient = TestHttpClient,
-                    fileParser = TestDatabaseFileParser,
+                    jsonDeserializer = TestJsonDeserializer,
                 )
 
                 // when
                 val result = exceptionExpected<IllegalArgumentException> {
-                    defaultDatabaseFileParser.parse(testResource("non-json.zip"))
+                    defaultDatabaseFileParser.deserialize(testResource("json/deserialization/non-json.zip"))
                 }
 
                 // then
@@ -174,14 +177,14 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
         fun `throws exception if the given zip file contains more than one file`() {
             tempDirectory {
                 // given
-                val defaultDatabaseFileParser = DatabaseFileParser(
+                val defaultDatabaseFileParser = DefaultExternalResourceJsonDeserializer(
                     httpClient = TestHttpClient,
-                    fileParser = TestDatabaseFileParser,
+                    jsonDeserializer = TestJsonDeserializer,
                 )
 
                 // when
                 val result = exceptionExpected<IllegalArgumentException> {
-                    defaultDatabaseFileParser.parse(testResource("2_files.zip"))
+                    defaultDatabaseFileParser.deserialize(testResource("json/deserialization/2_files.zip"))
                 }
 
                 // then
@@ -193,17 +196,17 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
         fun `correctly parse database file`() {
             runBlocking {
                 // given
-                val testDatabaseFileParser = object : JsonParser<Int> by TestDatabaseFileParser {
-                    override suspend fun parse(json: String): List<Int> = listOf(1, 2, 4, 5)
+                val testDatabaseFileParser = object : JsonDeserializer<List<Int>> by TestJsonDeserializer {
+                    override suspend fun deserialize(json: String): List<Int> = listOf(1, 2, 4, 5)
                 }
 
-                val defaultDatabaseFileParser = DatabaseFileParser(
+                val defaultDatabaseFileParser = DefaultExternalResourceJsonDeserializer(
                     httpClient = TestHttpClient,
-                    fileParser = testDatabaseFileParser,
+                    jsonDeserializer = testDatabaseFileParser,
                 )
 
                 // when
-                val result = defaultDatabaseFileParser.parse(testResource("test_db_for_deserialization.json"))
+                val result = defaultDatabaseFileParser.deserialize(testResource("json/deserialization/test_db_for_deserialization.json"))
 
                 // then
                 assertThat(result).containsExactlyInAnyOrder(1, 2, 4, 5)
@@ -389,13 +392,13 @@ internal class DatabaseFileParserTest : MockServerTestCase<WireMockServer> by Wi
                     }
                 )
 
-                val defaultDatabaseFileParser = DatabaseFileParser(
+                val defaultDatabaseFileParser = DefaultExternalResourceJsonDeserializer(
                     httpClient = TestHttpClient,
-                    fileParser = AnimeDatabaseJsonStringParser(),
+                    jsonDeserializer = AnimeListJsonStringDeserializer(),
                 )
 
                 // when
-                val result = defaultDatabaseFileParser.parse(testResource("test_db_for_deserialization.zip"))
+                val result = defaultDatabaseFileParser.deserialize(testResource("json/deserialization/test_db_for_deserialization.zip"))
 
                 // then
                 assertThat(result).containsAll(expectedEntries)
