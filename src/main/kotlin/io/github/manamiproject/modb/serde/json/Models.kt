@@ -1,10 +1,13 @@
 package io.github.manamiproject.modb.serde.json
 
-internal data class DatabaseJsonObject(
+import io.github.manamiproject.modb.core.collections.SortedList
+import io.github.manamiproject.modb.core.config.AnimeId
+
+internal data class DatasetJsonObject(
     val license: LicenseJsonObject = LicenseJsonObject(),
     val repository: String = "https://github.com/manami-project/anime-offline-database",
     val lastUpdate: String,
-    val data: List<DatabaseEntryJsonObject>,
+    val data: List<DatasetEntryJsonObject>,
 )
 
 internal data class LicenseJsonObject(
@@ -12,7 +15,7 @@ internal data class LicenseJsonObject(
     val url: String = "https://github.com/manami-project/anime-offline-database/blob/master/LICENSE",
 )
 
-internal data class DatabaseEntryJsonObject(
+internal data class DatasetEntryJsonObject(
     val sources: List<String>,
     val title: String,
     val type: String,
@@ -29,4 +32,8 @@ internal data class DatabaseEntryJsonObject(
 internal data class AnimeSeasonJsonObject(
     val season: String,
     val year: Int?,
+)
+
+internal data class DeadEntriesDocumentJsonObject(
+    val deadEntries: SortedList<AnimeId> = SortedList()
 )

@@ -1,4 +1,4 @@
-package io.github.manamiproject.modb.serde
+package io.github.manamiproject.modb.serde.json
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import io.github.manamiproject.modb.core.extensions.EMPTY
@@ -6,9 +6,8 @@ import io.github.manamiproject.modb.core.httpclient.HttpClient
 import io.github.manamiproject.modb.core.httpclient.HttpResponse
 import io.github.manamiproject.modb.core.models.Anime
 import io.github.manamiproject.modb.core.models.AnimeSeason
-import io.github.manamiproject.modb.serde.json.AnimeListJsonStringDeserializer
-import io.github.manamiproject.modb.serde.json.DefaultExternalResourceJsonDeserializer
-import io.github.manamiproject.modb.serde.json.JsonDeserializer
+import io.github.manamiproject.modb.serde.TestHttpClient
+import io.github.manamiproject.modb.serde.TestJsonDeserializer
 import io.github.manamiproject.modb.test.*
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
