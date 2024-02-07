@@ -19,7 +19,7 @@ public class AnimeListJsonStringDeserializer : JsonDeserializer<List<Anime>> {
 
         log.info { "Deserializing database" }
 
-        return@withContext Json.parseJson<DatabaseJsonObject>(json)!!.data.map {
+        return@withContext Json.parseJson<DatasetJsonObject>(json)!!.data.map {
             Anime(
                 _title = it.title,
                 type = Anime.Type.valueOf(it.type),

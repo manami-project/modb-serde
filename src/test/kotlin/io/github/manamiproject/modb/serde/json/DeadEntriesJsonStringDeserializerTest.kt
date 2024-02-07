@@ -1,7 +1,6 @@
-package io.github.manamiproject.modb.serde
+package io.github.manamiproject.modb.serde.json
 
 import io.github.manamiproject.modb.core.extensions.EMPTY
-import io.github.manamiproject.modb.serde.json.DeadEntriesJsonStringDeserializer
 import io.github.manamiproject.modb.test.exceptionExpected
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
