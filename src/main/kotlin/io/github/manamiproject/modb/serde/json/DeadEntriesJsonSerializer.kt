@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
 public class DeadEntriesJsonSerializer : JsonSerializer<Collection<AnimeId>> {
 
     override suspend fun serialize(obj: Collection<AnimeId>, minify: Boolean): String = withContext(LIMITED_CPU) {
-        val deadEntriesDocument = DeadEntriesDocumentJsonObject()
+        val deadEntriesDocument = JsonDeadEntries()
 
         obj.toSet().forEach {
             deadEntriesDocument.deadEntries.add(it)

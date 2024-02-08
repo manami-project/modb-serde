@@ -17,7 +17,7 @@ public class DeadEntriesJsonStringDeserializer : JsonDeserializer<List<AnimeId>>
 
         log.info { "Parsing dead entries" }
 
-        val jsonDocument: DeadEntriesDocumentJsonObject = Json.parseJson(json)!!
+        val jsonDocument: JsonDeadEntries = Json.parseJson(json)!!
 
         return@withContext jsonDocument.deadEntries
     }
