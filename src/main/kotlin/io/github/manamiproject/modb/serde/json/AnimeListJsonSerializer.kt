@@ -21,16 +21,16 @@ public class AnimeListJsonSerializer(
 ) : JsonSerializer<Collection<Anime>> {
 
     override suspend fun serialize(obj: Collection<Anime>, minify: Boolean): String = withContext(LIMITED_CPU) {
-        log.info { "Sorting dataset by title, type and episodes" }
+        log.debug { "Sorting dataset by title, type and episodes." }
 
         val sortedList = obj.map {
-            DatasetEntryJsonObject(
+            JsonDatasetEntry(
                 sources = it.sources.map { source -> source.toString() },
                 title = it.title,
                 type = it.type.toString(),
                 episodes = it.episodes,
                 status = it.status.toString(),
-                animeSeason = AnimeSeasonJsonObject(
+                animeSeason = JsonAnimeSeason(
                     year = if (it.animeSeason.year != 0) it.animeSeason.year else null,
                     season = it.animeSeason.season.toString()
                 ),
@@ -42,14 +42,16 @@ public class AnimeListJsonSerializer(
             )
         }.sortedWith(compareBy({ it.title.lowercase() }, {it.type}, { it.episodes }))
 
-        val data = DatasetJsonObject(
+        val data = JsonDataset(
             data = sortedList,
             lastUpdate = LocalDate.now(clock).format(ISO_DATE),
         )
 
         return@withContext if (minify) {
+            log.info { "Serializing anime list minified." }
             Json.toJson(data, DEACTIVATE_PRETTY_PRINT, DEACTIVATE_SERIALIZE_NULL)
         } else {
+            log.info { "Serializing anime list pretty print." }
             Json.toJson(data)
         }
     }

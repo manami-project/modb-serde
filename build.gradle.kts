@@ -4,6 +4,7 @@ plugins {
     `java-library`
     jacoco
     id("com.github.nbaztec.coveralls-jacoco") version "1.2.18"
+    kotlin("plugin.serialization") version "1.9.22"
 }
 
 val projectName = "modb-db-parser"
@@ -37,6 +38,9 @@ dependencies {
     api("io.github.manamiproject:modb-core:10.0.2")
 
     implementation(platform(kotlin("bom")))
+    implementation("org.apache.avro:avro:1.11.3")
+    implementation("com.github.avro-kotlin.avro4k:avro4k-core:1.10.0")
+    implementation("com.github.luben:zstd-jni:1.5.5-11")
 
     testImplementation("ch.qos.logback:logback-classic:1.4.14")
     testImplementation("io.github.manamiproject:modb-test:1.6.1")
