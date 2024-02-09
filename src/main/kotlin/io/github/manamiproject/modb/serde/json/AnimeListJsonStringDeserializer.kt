@@ -5,6 +5,7 @@ import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_CPU
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
 import io.github.manamiproject.modb.core.models.Anime
 import io.github.manamiproject.modb.core.models.AnimeSeason
+import io.github.manamiproject.modb.serde.DatasetModel
 import kotlinx.coroutines.withContext
 import java.net.URI
 
@@ -19,14 +20,14 @@ public class AnimeListJsonStringDeserializer : JsonDeserializer<List<Anime>> {
 
         log.info { "Deserializing database" }
 
-        return@withContext Json.parseJson<JsonDataset>(json)!!.data.map {
+        return@withContext Json.parseJson<DatasetModel>(json)!!.data.map {
             Anime(
                 _title = it.title,
-                type = Anime.Type.valueOf(it.type),
+                type = Anime.Type.valueOf(it.type.toString()),
                 episodes = it.episodes,
-                status = Anime.Status.valueOf(it.status),
+                status = Anime.Status.valueOf(it.status.toString()),
                 animeSeason = AnimeSeason(
-                    season = AnimeSeason.Season.of(it.animeSeason.season),
+                    season = AnimeSeason.Season.of(it.animeSeason.season.toString()),
                     year = it.animeSeason.year ?: AnimeSeason.UNKNOWN_YEAR,
                 ),
                 picture = URI(it.picture),

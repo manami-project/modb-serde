@@ -6,6 +6,11 @@ import io.github.manamiproject.modb.core.JsonSerializationOptions.DEACTIVATE_SER
 import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_CPU
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
 import io.github.manamiproject.modb.core.models.Anime
+import io.github.manamiproject.modb.serde.*
+import io.github.manamiproject.modb.serde.AnimeSeasonModel
+import io.github.manamiproject.modb.serde.DatasetModel
+import io.github.manamiproject.modb.serde.DatasetEntryModel
+import io.github.manamiproject.modb.serde.TypeModel
 import kotlinx.coroutines.withContext
 import java.time.Clock
 import java.time.LocalDate
@@ -24,15 +29,15 @@ public class AnimeListJsonSerializer(
         log.debug { "Sorting dataset by title, type and episodes." }
 
         val sortedList = obj.map {
-            JsonDatasetEntry(
+            DatasetEntryModel(
                 sources = it.sources.map { source -> source.toString() },
                 title = it.title,
-                type = it.type.toString(),
+                type = TypeModel.valueOf(it.type.toString()),
                 episodes = it.episodes,
-                status = it.status.toString(),
-                animeSeason = JsonAnimeSeason(
+                status = StatusModel.valueOf(it.status.toString()),
+                animeSeason = AnimeSeasonModel(
                     year = if (it.animeSeason.year != 0) it.animeSeason.year else null,
-                    season = it.animeSeason.season.toString()
+                    season = SeasonModel.valueOf(it.animeSeason.season.toString())
                 ),
                 picture = it.picture.toString(),
                 thumbnail = it.thumbnail.toString(),
@@ -42,7 +47,7 @@ public class AnimeListJsonSerializer(
             )
         }.sortedWith(compareBy({ it.title.lowercase() }, {it.type}, { it.episodes }))
 
-        val data = JsonDataset(
+        val data = DatasetModel(
             data = sortedList,
             lastUpdate = LocalDate.now(clock).format(ISO_DATE),
         )

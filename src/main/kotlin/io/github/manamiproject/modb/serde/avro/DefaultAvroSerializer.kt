@@ -7,9 +7,14 @@ import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_CPU
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
 import io.github.manamiproject.modb.core.models.Anime
 import io.github.manamiproject.modb.core.models.AnimeSeason
-import io.github.manamiproject.modb.serde.LICENSE_NAME
-import io.github.manamiproject.modb.serde.LICENSE_URL
-import io.github.manamiproject.modb.serde.REPO_URL
+import io.github.manamiproject.modb.serde.AnimeSeasonModel
+import io.github.manamiproject.modb.serde.DatasetModel
+import io.github.manamiproject.modb.serde.DatasetEntryModel
+import io.github.manamiproject.modb.serde.DatasetLicenseModel
+import io.github.manamiproject.modb.serde.DeadEntriesModel
+import io.github.manamiproject.modb.serde.SeasonModel
+import io.github.manamiproject.modb.serde.StatusModel
+import io.github.manamiproject.modb.serde.TypeModel
 import kotlinx.coroutines.withContext
 import org.apache.avro.file.CodecFactory
 import java.io.ByteArrayOutputStream
@@ -28,7 +33,7 @@ public class DefaultAvroSerializer(
 
     override suspend fun serializeAnimeList(animeList: Collection<Anime>): ByteArray = withContext(LIMITED_CPU) {
         val avroAnime = animeList.map { anime ->
-            AvroDatasetEntry(
+            DatasetEntryModel(
                 title = anime.title,
                 sources = anime.sources.map { it.toString() },
                 episodes = anime.episodes,
@@ -37,49 +42,49 @@ public class DefaultAvroSerializer(
                 synonyms = anime.synonyms.toList(),
                 relations = anime.relatedAnime.map { it.toString() },
                 tags = anime.tags.toList(),
-                animeSeason = AvroAnimeSeason(
+                animeSeason = AnimeSeasonModel(
                     season = when (anime.animeSeason.season) {
-                        AnimeSeason.Season.UNDEFINED -> AvroSeason.UNDEFINED
-                        AnimeSeason.Season.SPRING -> AvroSeason.SPRING
-                        AnimeSeason.Season.SUMMER -> AvroSeason.SUMMER
-                        AnimeSeason.Season.FALL -> AvroSeason.FALL
-                        AnimeSeason.Season.WINTER -> AvroSeason.WINTER
+                        AnimeSeason.Season.UNDEFINED -> SeasonModel.UNDEFINED
+                        AnimeSeason.Season.SPRING -> SeasonModel.SPRING
+                        AnimeSeason.Season.SUMMER -> SeasonModel.SUMMER
+                        AnimeSeason.Season.FALL -> SeasonModel.FALL
+                        AnimeSeason.Season.WINTER -> SeasonModel.WINTER
                     },
                     year = anime.animeSeason.year,
                 ),
                 status = when (anime.status) {
-                    Anime.Status.FINISHED -> AvroStatus.FINISHED
-                    Anime.Status.ONGOING -> AvroStatus.ONGOING
-                    Anime.Status.UPCOMING -> AvroStatus.UPCOMING
-                    Anime.Status.UNKNOWN -> AvroStatus.UNKNOWN
+                    Anime.Status.FINISHED -> StatusModel.FINISHED
+                    Anime.Status.ONGOING -> StatusModel.ONGOING
+                    Anime.Status.UPCOMING -> StatusModel.UPCOMING
+                    Anime.Status.UNKNOWN -> StatusModel.UNKNOWN
                 },
                 type = when (anime.type) {
-                    Anime.Type.TV -> AvroType.TV
-                    Anime.Type.MOVIE -> AvroType.MOVIE
-                    Anime.Type.OVA -> AvroType.OVA
-                    Anime.Type.ONA -> AvroType.ONA
-                    Anime.Type.SPECIAL -> AvroType.SPECIAL
-                    Anime.Type.UNKNOWN -> AvroType.UNKNOWN
+                    Anime.Type.TV -> TypeModel.TV
+                    Anime.Type.MOVIE -> TypeModel.MOVIE
+                    Anime.Type.OVA -> TypeModel.OVA
+                    Anime.Type.ONA -> TypeModel.ONA
+                    Anime.Type.SPECIAL -> TypeModel.SPECIAL
+                    Anime.Type.UNKNOWN -> TypeModel.UNKNOWN
                 }
             )
         }
 
-        val dataSet = AvroDataset(
-            license = AvroDatasetLicense(
-                name = LICENSE_NAME,
-                url = LICENSE_URL,
+        val dataSet = DatasetModel(
+            license = DatasetLicenseModel(
+                name = "GNU Affero General Public License v3.0",
+                url = "https://github.com/manami-project/anime-offline-database/blob/master/LICENSE",
             ),
-            repository = REPO_URL,
+            repository = "https://github.com/manami-project/anime-offline-database",
             lastUpdate = LocalDate.now(clock).format(ISO_DATE),
             data = avroAnime,
         )
 
         val outputStream = ByteArrayOutputStream()
-        val datasetSchema = Avro.default.schema(AvroDataset.serializer())
+        val datasetSchema = Avro.default.schema(DatasetModel.serializer())
 
         log.debug { "Serializing dataset into avro format." }
 
-        Avro.default.openOutputStream(AvroDataset.serializer()) {
+        Avro.default.openOutputStream(DatasetModel.serializer()) {
             encodeFormat = AvroEncodeFormat.Data(CodecFactory.zstandardCodec(16))
             schema = datasetSchema
         }.to(outputStream).use {
@@ -91,14 +96,14 @@ public class DefaultAvroSerializer(
     }
 
     override suspend fun serializeDeadEntries(deadEntries: Collection<AnimeId>): ByteArray = withContext(LIMITED_CPU) {
-        val avroDeadEntries = AvroDeadEntries(deadEntries.distinct())
+        val avroDeadEntries = DeadEntriesModel(deadEntries.distinct())
 
         val outputStream = ByteArrayOutputStream()
-        val datasetSchema = Avro.default.schema(AvroDeadEntries.serializer())
+        val datasetSchema = Avro.default.schema(DeadEntriesModel.serializer())
 
         log.debug { "Serializing dead entries into avro format." }
 
-        Avro.default.openOutputStream(AvroDeadEntries.serializer()) {
+        Avro.default.openOutputStream(DeadEntriesModel.serializer()) {
             encodeFormat = AvroEncodeFormat.Data(CodecFactory.zstandardCodec(16))
             schema = datasetSchema
         }.to(outputStream).use {

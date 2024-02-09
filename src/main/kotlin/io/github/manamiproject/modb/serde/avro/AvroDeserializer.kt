@@ -4,7 +4,7 @@ import io.github.manamiproject.modb.core.config.AnimeId
 import io.github.manamiproject.modb.core.models.Anime
 
 /**
- * Deserializes objects from [Apache Avro](https://avro.apache.org).
+ * Deserializes objects from [Apache Avro](https://avro.apache.org) presented as [ByteArray].
  * @since 5.0.0
  */
 public interface AvroDeserializer {

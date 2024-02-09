@@ -5,6 +5,7 @@ import io.github.manamiproject.modb.core.JsonSerializationOptions.DEACTIVATE_PRE
 import io.github.manamiproject.modb.core.JsonSerializationOptions.DEACTIVATE_SERIALIZE_NULL
 import io.github.manamiproject.modb.core.config.AnimeId
 import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_CPU
+import io.github.manamiproject.modb.serde.DeadEntriesModel
 import kotlinx.coroutines.withContext
 
 /**
@@ -15,11 +16,7 @@ import kotlinx.coroutines.withContext
 public class DeadEntriesJsonSerializer : JsonSerializer<Collection<AnimeId>> {
 
     override suspend fun serialize(obj: Collection<AnimeId>, minify: Boolean): String = withContext(LIMITED_CPU) {
-        val deadEntriesDocument = JsonDeadEntries()
-
-        obj.toSet().forEach {
-            deadEntriesDocument.deadEntries.add(it)
-        }
+        val deadEntriesDocument = DeadEntriesModel(obj.toSet().sorted())
 
         return@withContext if (minify) {
             Json.toJson(deadEntriesDocument, DEACTIVATE_PRETTY_PRINT, DEACTIVATE_SERIALIZE_NULL)
