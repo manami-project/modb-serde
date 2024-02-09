@@ -7,11 +7,18 @@ import io.github.manamiproject.modb.core.config.AnimeId
 import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_CPU
 import io.github.manamiproject.modb.core.models.Anime
 import io.github.manamiproject.modb.core.models.AnimeSeason
+import io.github.manamiproject.modb.serde.DatasetModel
+import io.github.manamiproject.modb.serde.DeadEntriesModel
+import io.github.manamiproject.modb.serde.SeasonModel
+import io.github.manamiproject.modb.serde.StatusModel
+import io.github.manamiproject.modb.serde.TypeModel
 import kotlinx.coroutines.withContext
 import java.net.URI
 
 /**
- * Deserializes objects to [Apache Avro](https://avro.apache.org).
+ * Deserializes objects from [Apache Avro](https://avro.apache.org).
+ * For the anime listtThe resulting list will be sorted by title, type and episodes in that order.
+ * The list of [AnimeId] will be sorted as well.
  * @since 5.0.0
  */
 public class DefaultAvroDeserializer : AvroDeserializer {
@@ -19,9 +26,9 @@ public class DefaultAvroDeserializer : AvroDeserializer {
     override suspend fun deserializeAnimeList(animeList: ByteArray): List<Anime> = withContext(LIMITED_CPU) {
         require(animeList.isNotEmpty()) { "Given ByteArray must not be empty." }
 
-        val serializer = AvroDataset.serializer()
+        val serializer = DatasetModel.serializer()
         val datasetSchema = Avro.default.schema(serializer)
-        val content = mutableListOf<AvroDataset>()
+        val content = mutableListOf<DatasetModel>()
 
         Avro.default.openInputStream(serializer) {
             decodeFormat = AvroDecodeFormat.Data(datasetSchema, datasetSchema)
@@ -40,27 +47,27 @@ public class DefaultAvroDeserializer : AvroDeserializer {
                 picture = URI(entry.picture),
                 thumbnail = URI(entry.thumbnail),
                 type = when (entry.type) {
-                    AvroType.TV -> Anime.Type.TV
-                    AvroType.MOVIE -> Anime.Type.MOVIE
-                    AvroType.OVA -> Anime.Type.OVA
-                    AvroType.ONA -> Anime.Type.ONA
-                    AvroType.SPECIAL -> Anime.Type.SPECIAL
-                    AvroType.UNKNOWN -> Anime.Type.UNKNOWN
+                    TypeModel.TV -> Anime.Type.TV
+                    TypeModel.MOVIE -> Anime.Type.MOVIE
+                    TypeModel.OVA -> Anime.Type.OVA
+                    TypeModel.ONA -> Anime.Type.ONA
+                    TypeModel.SPECIAL -> Anime.Type.SPECIAL
+                    TypeModel.UNKNOWN -> Anime.Type.UNKNOWN
                 },
                 status = when (entry.status) {
-                    AvroStatus.FINISHED -> Anime.Status.FINISHED
-                    AvroStatus.ONGOING -> Anime.Status.ONGOING
-                    AvroStatus.UPCOMING -> Anime.Status.UPCOMING
-                    AvroStatus.UNKNOWN -> Anime.Status.UNKNOWN
+                    StatusModel.FINISHED -> Anime.Status.FINISHED
+                    StatusModel.ONGOING -> Anime.Status.ONGOING
+                    StatusModel.UPCOMING -> Anime.Status.UPCOMING
+                    StatusModel.UNKNOWN -> Anime.Status.UNKNOWN
                 },
                 animeSeason = AnimeSeason(
-                    year = entry.animeSeason.year,
+                    year = entry.animeSeason.year ?: 0,
                     season = when (entry.animeSeason.season) {
-                        AvroSeason.UNDEFINED -> AnimeSeason.Season.UNDEFINED
-                        AvroSeason.SPRING -> AnimeSeason.Season.SPRING
-                        AvroSeason.SUMMER -> AnimeSeason.Season.SUMMER
-                        AvroSeason.FALL -> AnimeSeason.Season.FALL
-                        AvroSeason.WINTER -> AnimeSeason.Season.WINTER
+                        SeasonModel.UNDEFINED -> AnimeSeason.Season.UNDEFINED
+                        SeasonModel.SPRING -> AnimeSeason.Season.SPRING
+                        SeasonModel.SUMMER -> AnimeSeason.Season.SUMMER
+                        SeasonModel.FALL -> AnimeSeason.Season.FALL
+                        SeasonModel.WINTER -> AnimeSeason.Season.WINTER
                     },
                 ),
             )
@@ -70,9 +77,9 @@ public class DefaultAvroDeserializer : AvroDeserializer {
     override suspend fun deserializeDeadEntries(deadEntries: ByteArray): List<AnimeId> = withContext(LIMITED_CPU) {
         require(deadEntries.isNotEmpty()) { "Given ByteArray must not be empty." }
 
-        val serializer = AvroDeadEntries.serializer()
+        val serializer = DeadEntriesModel.serializer()
         val datasetSchema = Avro.default.schema(serializer)
-        val content = mutableListOf<AvroDeadEntries>()
+        val content = mutableListOf<DeadEntriesModel>()
 
         Avro.default.openInputStream(serializer) {
             decodeFormat = AvroDecodeFormat.Data(datasetSchema, datasetSchema)

@@ -1,4 +1,4 @@
-package io.github.manamiproject.modb.serde.avro
+package io.github.manamiproject.modb.serde
 
 import com.github.avrokotlin.avro4k.Avro
 import org.assertj.core.api.Assertions.assertThat
@@ -9,7 +9,7 @@ internal class AvroModelsKtTest {
     @Test
     fun `schema test AvroDataset`() {
         // when
-        val result = Avro.default.schema(AvroDataset.serializer()).toString(true)
+        val result = Avro.default.schema(DatasetModel.serializer()).toString(true)
 
         // then
         assertThat(result).isEqualTo("""
@@ -83,7 +83,7 @@ internal class AvroModelsKtTest {
                       }
                     }, {
                       "name" : "year",
-                      "type" : "int"
+                      "type" : [ "null", "int" ]
                     } ]
                   }
                 }, {
@@ -120,7 +120,7 @@ internal class AvroModelsKtTest {
     @Test
     fun `schema test AvroAnime`() {
         // when
-        val result = Avro.default.schema(AvroDatasetEntry.serializer()).toString(true)
+        val result = Avro.default.schema(DatasetEntryModel.serializer()).toString(true)
 
         // then
         assertThat(result).isEqualTo("""
@@ -168,7 +168,7 @@ internal class AvroModelsKtTest {
                 }
               }, {
                 "name" : "year",
-                "type" : "int"
+                "type" : [ "null", "int" ]
               } ]
             }
           }, {
@@ -202,7 +202,7 @@ internal class AvroModelsKtTest {
     @Test
     fun `schema test AvroAnimeSeason`() {
         // when
-        val result = Avro.default.schema(AvroAnimeSeason.serializer()).toString(true)
+        val result = Avro.default.schema(AnimeSeasonModel.serializer()).toString(true)
 
         // then
         assertThat(result).isEqualTo("""
@@ -219,7 +219,7 @@ internal class AvroModelsKtTest {
             }
           }, {
             "name" : "year",
-            "type" : "int"
+            "type" : [ "null", "int" ]
           } ]
         }""".trimIndent())
     }
@@ -227,7 +227,7 @@ internal class AvroModelsKtTest {
     @Test
     fun `schema test AvroLicense`() {
         // when
-        val result = Avro.default.schema(AvroDatasetLicense.serializer()).toString(true)
+        val result = Avro.default.schema(DatasetLicenseModel.serializer()).toString(true)
 
         // then
         assertThat(result).isEqualTo("""
@@ -248,7 +248,7 @@ internal class AvroModelsKtTest {
     @Test
     fun `schema test AvroSeason`() {
         // when
-        val result = Avro.default.schema(AvroSeason.serializer()).toString(true)
+        val result = Avro.default.schema(SeasonModel.serializer()).toString(true)
 
         // then
         assertThat(result).isEqualTo("""
@@ -263,7 +263,7 @@ internal class AvroModelsKtTest {
     @Test
     fun `schema test AvroStatus`() {
         // when
-        val result = Avro.default.schema(AvroStatus.serializer()).toString(true)
+        val result = Avro.default.schema(StatusModel.serializer()).toString(true)
 
         // then
         assertThat(result).isEqualTo("""
@@ -278,7 +278,7 @@ internal class AvroModelsKtTest {
     @Test
     fun `schema test AvroType`() {
         // when
-        val result = Avro.default.schema(AvroType.serializer()).toString(true)
+        val result = Avro.default.schema(TypeModel.serializer()).toString(true)
 
         // then
         assertThat(result).isEqualTo("""
@@ -293,7 +293,7 @@ internal class AvroModelsKtTest {
     @Test
     fun `schema test AvroDeadEntries`() {
         // when
-        val result = Avro.default.schema(AvroDeadEntries.serializer()).toString(true)
+        val result = Avro.default.schema(DeadEntriesModel.serializer()).toString(true)
 
         // then
         assertThat(result).isEqualTo("""

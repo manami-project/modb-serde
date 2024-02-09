@@ -1,4 +1,4 @@
-package io.github.manamiproject.modb.serde.avro
+package io.github.manamiproject.modb.serde
 
 import com.github.avrokotlin.avro4k.AvroName
 import com.github.avrokotlin.avro4k.AvroNamespace
@@ -16,11 +16,11 @@ import io.github.manamiproject.modb.core.models.Anime
 @Serializable
 @AvroName("Dataset")
 @AvroNamespace("io.github.manamiproject.modb.serde.avro")
-internal data class AvroDataset(
-    internal val license: AvroDatasetLicense,
-    internal val repository: String,
+internal data class DatasetModel(
+    internal val license: DatasetLicenseModel = DatasetLicenseModel(),
+    internal val repository: String = "https://github.com/manami-project/anime-offline-database",
     internal val lastUpdate: String,
-    internal val data: List<AvroDatasetEntry>
+    internal val data: List<DatasetEntryModel>
 )
 
 /**
@@ -41,13 +41,13 @@ internal data class AvroDataset(
 @Serializable
 @AvroName("Anime")
 @AvroNamespace("io.github.manamiproject.modb.serde.avro")
-internal data class AvroDatasetEntry(
+internal data class DatasetEntryModel(
     internal val sources: List<String>,
     internal val title: String,
-    internal val type: AvroType,
+    internal val type: TypeModel,
     internal val episodes: Int,
-    internal val status: AvroStatus,
-    internal val animeSeason: AvroAnimeSeason,
+    internal val status: StatusModel,
+    internal val animeSeason: AnimeSeasonModel,
     internal val picture: String,
     internal val thumbnail: String,
     internal val synonyms: List<String>,
@@ -64,9 +64,9 @@ internal data class AvroDatasetEntry(
 @Serializable
 @AvroName("AnimeSeason")
 @AvroNamespace("io.github.manamiproject.modb.serde.avro")
-internal data class AvroAnimeSeason(
-    internal val season: AvroSeason,
-    internal val year: Int,
+internal data class AnimeSeasonModel(
+    internal val season: SeasonModel,
+    internal val year: Int?,
 )
 
 /**
@@ -78,9 +78,9 @@ internal data class AvroAnimeSeason(
 @Serializable
 @AvroName("License")
 @AvroNamespace("io.github.manamiproject.modb.serde.avro")
-internal data class AvroDatasetLicense(
-    internal val name: String,
-    internal val url: String,
+internal data class DatasetLicenseModel(
+    internal val name: String = "GNU Affero General Public License v3.0",
+    internal val url: String = "https://github.com/manami-project/anime-offline-database/blob/master/LICENSE",
 )
 
 /**
@@ -90,7 +90,7 @@ internal data class AvroDatasetLicense(
 @Serializable
 @AvroName("Season")
 @AvroNamespace("io.github.manamiproject.modb.serde.avro")
-internal enum class AvroSeason {
+internal enum class SeasonModel {
     UNDEFINED,
     SPRING,
     SUMMER,
@@ -105,7 +105,7 @@ internal enum class AvroSeason {
 @Serializable
 @AvroName("Status")
 @AvroNamespace("io.github.manamiproject.modb.serde.avro")
-internal enum class AvroStatus {
+internal enum class StatusModel {
     FINISHED,
     ONGOING,
     UPCOMING,
@@ -119,7 +119,7 @@ internal enum class AvroStatus {
 @Serializable
 @AvroName("Type")
 @AvroNamespace("io.github.manamiproject.modb.serde.avro")
-internal enum class AvroType {
+internal enum class TypeModel {
     TV,
     MOVIE,
     OVA,
@@ -136,6 +136,6 @@ internal enum class AvroType {
 @Serializable
 @AvroName("DeadEntries")
 @AvroNamespace("io.github.manamiproject.modb.serde.avro")
-internal data class AvroDeadEntries(
+internal data class DeadEntriesModel(
     internal val deadEntries: List<String>,
 )

@@ -4,6 +4,7 @@ import io.github.manamiproject.modb.core.Json
 import io.github.manamiproject.modb.core.config.AnimeId
 import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_CPU
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
+import io.github.manamiproject.modb.serde.DeadEntriesModel
 import kotlinx.coroutines.withContext
 
 /**
@@ -17,7 +18,7 @@ public class DeadEntriesJsonStringDeserializer : JsonDeserializer<List<AnimeId>>
 
         log.info { "Parsing dead entries" }
 
-        val jsonDocument: JsonDeadEntries = Json.parseJson(json)!!
+        val jsonDocument: DeadEntriesModel = Json.parseJson(json)!!
 
         return@withContext jsonDocument.deadEntries
     }
