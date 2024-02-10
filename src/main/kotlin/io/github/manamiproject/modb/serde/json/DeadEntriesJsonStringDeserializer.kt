@@ -8,7 +8,7 @@ import io.github.manamiproject.modb.serde.DeadEntriesModel
 import kotlinx.coroutines.withContext
 
 /**
- * Can deserialize dead entry files from manami-project anime-offline-database.
+ * Can deserialize dead entry files from [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database).
  * @since 5.0.0
  */
 public class DeadEntriesJsonStringDeserializer : JsonDeserializer<List<AnimeId>> {

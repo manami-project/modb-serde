@@ -9,7 +9,7 @@ import io.github.manamiproject.modb.serde.DeadEntriesModel
 import kotlinx.coroutines.withContext
 
 /**
- * Can serialize a [Collection] of dead entries files from manami-project anime-offline-database.
+ * Can serialize a [Collection] of dead entries files from [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database).
  * The resulting lists is duplicate free and sorted.
  * @since 5.0.0
  */

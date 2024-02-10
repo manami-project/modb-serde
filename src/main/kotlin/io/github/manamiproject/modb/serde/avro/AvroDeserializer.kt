@@ -10,7 +10,7 @@ import io.github.manamiproject.modb.core.models.Anime
 public interface AvroDeserializer {
 
     /**
-     * Deserializes manami-project anime-offline-database file in avro format.
+     * Deserializes [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database) file in avro format.
      * @since 5.0.0
      * @param animeList Anime dataset file in avro format as [ByteArray].
      * @return List of anime.
@@ -18,7 +18,7 @@ public interface AvroDeserializer {
     public suspend fun deserializeAnimeList(animeList: ByteArray): List<Anime>
 
     /**
-     * Deserializes one of the manami-project anime-offline-database dead entries files.
+     * Deserializes one of the [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database) dead entries files.
      * @since 5.0.0
      * @param deadEntries Dead entries file in avro format as [ByteArray].
      * @return List of anime IDs.

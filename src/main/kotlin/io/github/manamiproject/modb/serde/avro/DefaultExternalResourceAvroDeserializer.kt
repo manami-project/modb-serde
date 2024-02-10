@@ -16,7 +16,7 @@ import kotlin.io.path.readBytes
 /**
  * # What it does
  * + Can download [Apache Avro](https://avro.apache.org) files from manami-project anime-offline-database via HTTPS and deserialize them.
- * + Can deserialize the files from manami-project anime-offline-database as local [Apache Avro](https://avro.apache.org) files.
+ * + Can deserialize the files from [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database) as local [Apache Avro](https://avro.apache.org) files.
  *
  * You can either deserialize the anime dataset file or a dead entries file by using a [URL] or a [RegularFile].
  * To deserialize a simple [ByteArray] use [DefaultAvroDeserializer].

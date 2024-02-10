@@ -1,1 +1,1 @@
-rootProject.name = "modb-db-parser"
+rootProject.name = "modb-serde"
