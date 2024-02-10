@@ -41,7 +41,7 @@ internal class AnimeListJsonDeserializerTest {
     }
 
     @Test
-    fun `correctly parse database string`() {
+    fun `correctly deserialize dataset string`() {
         runBlocking {
             // given
             val deserializer = AnimeListJsonStringDeserializer()

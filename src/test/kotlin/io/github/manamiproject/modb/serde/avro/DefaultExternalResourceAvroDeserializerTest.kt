@@ -65,7 +65,7 @@ internal class DefaultExternalResourceAvroDeserializerTest : MockServerTestCase<
         }
 
         @Test
-        fun `correctly download and parse dataset file`() {
+        fun `correctly download and deserialize dataset file`() {
             runBlocking {
                 // given
                 val testHttpClient = object: HttpClient by TestHttpClient {
@@ -165,7 +165,7 @@ internal class DefaultExternalResourceAvroDeserializerTest : MockServerTestCase<
         }
 
         @Test
-        fun `correctly download and parse dataset file`() {
+        fun `correctly download and deserialize dataset file`() {
             runBlocking {
                 // given
                 val testHttpClient = object: HttpClient by TestHttpClient {
@@ -244,7 +244,7 @@ internal class DefaultExternalResourceAvroDeserializerTest : MockServerTestCase<
         }
 
         @Test
-        fun `correctly parse dataset file`() {
+        fun `correctly deserialize dataset file`() {
             runBlocking {
                 // given
                 val externalResourceDeserializer = DefaultExternalResourceAvroDeserializer(
@@ -316,7 +316,7 @@ internal class DefaultExternalResourceAvroDeserializerTest : MockServerTestCase<
         }
 
         @Test
-        fun `correctly parse dataset file`() {
+        fun `correctly deserialize dataset file`() {
             runBlocking {
                 // given
                 val externalResourceDeserializer = DefaultExternalResourceAvroDeserializer(

@@ -14,8 +14,15 @@ import java.net.URL
 import kotlin.io.path.readBytes
 
 /**
- * Deserializes the anime dataset file and dead entries files in  [Apache Avro](https://avro.apache.org) format either as [URL] or [RegularFile].
+ * # What it does
+ * + Can download [Apache Avro](https://avro.apache.org) files from manami-project anime-offline-database via HTTPS and deserialize them.
+ * + Can deserialize the files from manami-project anime-offline-database as local [Apache Avro](https://avro.apache.org) files.
+ *
+ * You can either deserialize the anime dataset file or a dead entries file by using a [URL] or a [RegularFile].
+ * To deserialize a simple [ByteArray] use [DefaultAvroDeserializer].
  * @since 5.0.0
+ * @param httpClient Used to download given [URL]s
+ * @param deserializer Deserializer for either the dataset or dead entries file.
  */
 public class DefaultExternalResourceAvroDeserializer(
     private val httpClient: HttpClient = DefaultHttpClient(),
@@ -23,7 +30,7 @@ public class DefaultExternalResourceAvroDeserializer(
 ) : ExternalResourceAvroDeserializer {
 
     override suspend fun deserializeAnimeList(url: URL): List<Anime> = withContext(LIMITED_CPU) {
-        log.info { "Downloading database file from [$url]" }
+        log.info { "Downloading dataset file from [$url]" }
 
         val response = httpClient.get(url)
 
@@ -37,7 +44,7 @@ public class DefaultExternalResourceAvroDeserializer(
     override suspend fun deserializeAnimeList(file: RegularFile): List<Anime> = withContext(LIMITED_FS) {
         require(file.regularFileExists()) { "The given path does not exist or is not a regular file: [${file.toAbsolutePath()}]" }
 
-        log.info { "Reading database file." }
+        log.info { "Reading dataset file." }
 
         return@withContext deserializer.deserializeAnimeList(file.readBytes())
     }

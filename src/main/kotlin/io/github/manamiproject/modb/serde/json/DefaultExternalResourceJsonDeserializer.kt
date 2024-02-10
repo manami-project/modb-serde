@@ -20,36 +20,37 @@ import java.util.zip.ZipFile
  * + Can deserialize the files from manami-project anime-offline-database as local JSON file if it is provided as zip file.
  *
  * # Usage
- * Wrap an instance of [JsonDeserializer] in a [DefaultExternalResourceJsonDeserializer] to be able to parse a [URL] or a [RegularFile]
+ * Wrap an instance of [JsonDeserializer] in a [DefaultExternalResourceJsonDeserializer] to be able to deserialize a [URL] or a [RegularFile]
  * ```kotlin
- * val animeListDeserializer = DefaultExternalResourceJsonDeserializer<List<Anime>>(fileParser = AnimeDatabaseJsonStringDeserializer())
- * val deadEntriesDeserializer = DefaultExternalResourceJsonDeserializer<List<AnimeId>>(fileParser = DeadEntriesJsonStringDeserializer())
+ * val animeListDeserializer = DefaultExternalResourceJsonDeserializer<List<Anime>>(deserializer = AnimeListJsonStringDeserializer())
+ * val deadEntriesDeserializer = DefaultExternalResourceJsonDeserializer<List<AnimeId>>(deserializer = DeadEntriesJsonStringDeserializer())
  * ```
- * Now you can either parse the anime database file or a dead entries file by using a [URL], a [RegularFile] or a JSON [String].
- * The deserializer can also handle zipped files, but the zip file must only contain a single JSON file.
+ * Now you can either deserialize the anime dataset file or a dead entries file by using a [URL] or a [RegularFile].
+ * To deserialize a JSON [String] use [AnimeListJsonStringDeserializer] or [DeadEntriesJsonStringDeserializer].
+ * The [DefaultExternalResourceJsonDeserializer] can also handle zipped files, but the zip file must only contain a single JSON file.
  * **Example:**
  * ```kotlin
- * val deserializer = DefaultExternalResourceJsonDeserializer<List<Anime>>(fileParser = AnimeDatabaseJsonStringDeserializer())
- * val allAnime: List<Anime> = parser.parse(URL("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database-minified.json"))
+ * val deserializer = DefaultExternalResourceJsonDeserializer<List<Anime>>(deserializer = AnimeListJsonStringDeserializer())
+ * val allAnime: List<Anime> = deserializer.deserialize(URI("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database-minified.json").toURL())
  * ```
  * @since 5.0.0
  * @param httpClient Used to download given [URL]s
- * @param jsonDeserializer File parser for either the database or dead entries file.
+ * @param deserializer Deserializer for either the dataset or dead entries file.
  */
 public class DefaultExternalResourceJsonDeserializer<out T>(
     private val httpClient: HttpClient = DefaultHttpClient(),
-    private val jsonDeserializer: JsonDeserializer<T>,
+    private val deserializer: JsonDeserializer<T>,
 ) : ExternalResourceJsonDeserializer<T> {
 
     override suspend fun deserialize(url: URL): T = withContext(LIMITED_CPU) {
-        log.info { "Downloading database file from [$url]" }
+        log.info { "Downloading dataset file from [$url]" }
 
         val response = httpClient.get(url)
 
         return@withContext when {
             !response.isOk() -> throw IllegalStateException("Error downloading file: HTTP response code was: [${response.code}]")
             response.bodyAsText.isBlank() -> throw IllegalStateException("Error downloading file: The response body was blank.")
-            else -> jsonDeserializer.deserialize(response.bodyAsText)
+            else -> deserializer.deserialize(response.bodyAsText)
         }
     }
 
@@ -62,9 +63,9 @@ public class DefaultExternalResourceJsonDeserializer<out T>(
             else -> throw IllegalArgumentException("File is neither JSON nor zip file")
         }
 
-        log.info { "Reading database file." }
+        log.info { "Reading dataset file." }
 
-        return@withContext jsonDeserializer.deserialize(content)
+        return@withContext deserializer.deserialize(content)
     }
 
     private suspend fun readZip(file: RegularFile): String = withContext(LIMITED_FS) {

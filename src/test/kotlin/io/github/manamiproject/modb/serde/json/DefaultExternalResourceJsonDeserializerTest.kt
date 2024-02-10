@@ -30,7 +30,7 @@ internal class DefaultExternalResourceJsonDeserializerTest : MockServerTestCase<
 
             val externalResourceDeserializer = DefaultExternalResourceJsonDeserializer(
                 httpClient = testHttpClient,
-                jsonDeserializer = TestJsonDeserializer,
+                deserializer = TestJsonDeserializer,
             )
 
             // when
@@ -51,7 +51,7 @@ internal class DefaultExternalResourceJsonDeserializerTest : MockServerTestCase<
 
             val externalResourceDeserializer = DefaultExternalResourceJsonDeserializer(
                 httpClient = testHttpClient,
-                jsonDeserializer = TestJsonDeserializer,
+                deserializer = TestJsonDeserializer,
             )
 
             // when
@@ -64,7 +64,7 @@ internal class DefaultExternalResourceJsonDeserializerTest : MockServerTestCase<
         }
 
         @Test
-        fun `correctly download and parse database file`() {
+        fun `correctly download and deserialize dataset file`() {
             runBlocking {
                 // given
                 val testHttpClient = object: HttpClient by TestHttpClient {
@@ -80,7 +80,7 @@ internal class DefaultExternalResourceJsonDeserializerTest : MockServerTestCase<
 
                 val externalResourceDeserializer = DefaultExternalResourceJsonDeserializer(
                     httpClient = testHttpClient,
-                    jsonDeserializer = testDeserializer,
+                    deserializer = testDeserializer,
                 )
 
                 // when
@@ -101,7 +101,7 @@ internal class DefaultExternalResourceJsonDeserializerTest : MockServerTestCase<
                 // given
                 val externalResourceDeserializer = DefaultExternalResourceJsonDeserializer(
                     httpClient = TestHttpClient,
-                    jsonDeserializer = TestJsonDeserializer,
+                    deserializer = TestJsonDeserializer,
                 )
 
                 // when
@@ -120,7 +120,7 @@ internal class DefaultExternalResourceJsonDeserializerTest : MockServerTestCase<
                 // given
                 val externalResourceDeserializer = DefaultExternalResourceJsonDeserializer(
                     httpClient = TestHttpClient,
-                    jsonDeserializer = TestJsonDeserializer,
+                    deserializer = TestJsonDeserializer,
                 )
                 val testFile = tempDir.resolve("anime-offline-database.json")
 
@@ -140,7 +140,7 @@ internal class DefaultExternalResourceJsonDeserializerTest : MockServerTestCase<
                 // given
                 val externalResourceDeserializer = DefaultExternalResourceJsonDeserializer(
                     httpClient = TestHttpClient,
-                    jsonDeserializer = TestJsonDeserializer,
+                    deserializer = TestJsonDeserializer,
                 )
 
                 // when
@@ -159,7 +159,7 @@ internal class DefaultExternalResourceJsonDeserializerTest : MockServerTestCase<
                 // given
                 val externalResourceDeserializer = DefaultExternalResourceJsonDeserializer(
                     httpClient = TestHttpClient,
-                    jsonDeserializer = TestJsonDeserializer,
+                    deserializer = TestJsonDeserializer,
                 )
 
                 // when
@@ -178,7 +178,7 @@ internal class DefaultExternalResourceJsonDeserializerTest : MockServerTestCase<
                 // given
                 val externalResourceDeserializer = DefaultExternalResourceJsonDeserializer(
                     httpClient = TestHttpClient,
-                    jsonDeserializer = TestJsonDeserializer,
+                    deserializer = TestJsonDeserializer,
                 )
 
                 // when
@@ -192,7 +192,7 @@ internal class DefaultExternalResourceJsonDeserializerTest : MockServerTestCase<
         }
 
         @Test
-        fun `correctly parse database file`() {
+        fun `correctly deserialize dataset file`() {
             runBlocking {
                 // given
                 val testDeserializer = object : JsonDeserializer<List<Int>> by TestJsonDeserializer {
@@ -201,7 +201,7 @@ internal class DefaultExternalResourceJsonDeserializerTest : MockServerTestCase<
 
                 val externalResourceDeserializer = DefaultExternalResourceJsonDeserializer(
                     httpClient = TestHttpClient,
-                    jsonDeserializer = testDeserializer,
+                    deserializer = testDeserializer,
                 )
 
                 // when
@@ -213,7 +213,7 @@ internal class DefaultExternalResourceJsonDeserializerTest : MockServerTestCase<
         }
 
         @Test
-        fun `correctly parse zipped database file`() {
+        fun `correctly deserialize zipped dataset file`() {
             runBlocking {
                 // given
                 val expectedEntries = listOf(
@@ -393,7 +393,7 @@ internal class DefaultExternalResourceJsonDeserializerTest : MockServerTestCase<
 
                 val externalResourceDeserializer = DefaultExternalResourceJsonDeserializer(
                     httpClient = TestHttpClient,
-                    jsonDeserializer = AnimeListJsonStringDeserializer(),
+                    deserializer = AnimeListJsonStringDeserializer(),
                 )
 
                 // when
