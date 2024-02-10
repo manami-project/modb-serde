@@ -56,7 +56,7 @@ internal class DeadEntriesJsonStringDeserializerTest {
     }
 
     @Test
-    fun `correctly parse list of String`() {
+    fun `correctly deserialize list of String`() {
         runBlocking {
             // given
             val deserializer = DeadEntriesJsonStringDeserializer()

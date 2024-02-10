@@ -4,7 +4,7 @@ import io.github.manamiproject.modb.core.extensions.RegularFile
 import java.net.URL
 
 /**
- * Parses external resources such as [RegularFile]s or [URL]s.
+ * Deserializes external resources such as [RegularFile]s or [URL]s.
  * @since 5.0.0
  */
 public interface ExternalResourceJsonDeserializer<out T> {

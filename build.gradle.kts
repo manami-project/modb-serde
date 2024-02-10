@@ -98,7 +98,7 @@ publishing {
             pom {
                 packaging = "jar"
                 name.set(projectName)
-                description.set("This lib can parse both the anime database file as well as the files for the dead entries.")
+                description.set("This lib can serialize and deserialize (serde) both the anime dataset file as well as the files for the dead entries.")
                 url.set("https://github.com/$githubUsername/$projectName")
 
                 licenses {

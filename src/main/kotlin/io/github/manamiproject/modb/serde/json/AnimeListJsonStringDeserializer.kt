@@ -18,7 +18,7 @@ public class AnimeListJsonStringDeserializer : JsonDeserializer<List<Anime>> {
     override suspend fun deserialize(json: String): List<Anime> = withContext(LIMITED_CPU) {
         require(json.isNotBlank()) { "Given JSON string must not be blank." }
 
-        log.info { "Deserializing database" }
+        log.info { "Deserializing dataset" }
 
         return@withContext Json.parseJson<DatasetModel>(json)!!.data.map {
             Anime(
