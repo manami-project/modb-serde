@@ -1,4 +1,4 @@
-![Build](https://github.com/manami-project/modb-db-parser/actions/workflows/build.yml/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/manami-project/modb-db-parser/badge.svg)](https://coveralls.io/github/manami-project/modb-db-parser) ![jdk21](https://img.shields.io/badge/jdk-21-informational)
+![Build](https://github.com/manami-project/modb-serde/actions/workflows/build.yml/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/manami-project/modb-serde/badge.svg)](https://coveralls.io/github/manami-project/modb-serde) ![jdk21](https://img.shields.io/badge/jdk-21-informational)
 # modb-serde
 _[modb](https://github.com/manami-project?tab=repositories&q=modb&type=source)_ stands for _**M**anami **O**ffline **D**ata**B**ase_. Repositories prefixed with this acronym are used to create the [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database).
 
@@ -10,7 +10,7 @@ This lib can serialize and deserialize (serde) both the anime dataset file as we
 Create an instance of the respective `JsonSerializer`:
 
 ```kotlin
-// deserialize a the JSON String of the anime database file
+// deserialize a the JSON String of the anime dataset file
 val animeListDeserializer = AnimeListJsonStringDeserializer()
 
 // deserialize a the JSON String of a dead entries file

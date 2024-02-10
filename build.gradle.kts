@@ -7,7 +7,7 @@ plugins {
     kotlin("plugin.serialization") version "1.9.22"
 }
 
-val projectName = "modb-db-parser"
+val projectName = "modb-serde"
 val githubUsername = "manami-project"
 
 repositories {

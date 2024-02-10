@@ -17,7 +17,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter.ISO_DATE
 
 /**
- * Can serialize a [Collection] of [Anime] to the final anime-offline-database JSON file.
+ * Can serialize a [Collection] of [Anime] to the final [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database) JSON file.
  * The resulting list will be sorted by title, type and episodes in that order.
  * @since 5.0.0
  */

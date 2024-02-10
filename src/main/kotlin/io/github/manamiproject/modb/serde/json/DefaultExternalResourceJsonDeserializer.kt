@@ -15,9 +15,9 @@ import java.util.zip.ZipFile
 
 /**
  * # What it does
- * + Can download JSON files from manami-project anime-offline-database via HTTPS and deserialize them.
- * + Can deserialize the files from manami-project anime-offline-database as local JSON file.
- * + Can deserialize the files from manami-project anime-offline-database as local JSON file if it is provided as zip file.
+ * + Can download JSON files from [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database) via HTTPS and deserialize them.
+ * + Can deserialize the files from [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database) as local JSON file.
+ * + Can deserialize the files from [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database) as local JSON file if it is provided as zip file.
  *
  * # Usage
  * Wrap an instance of [JsonDeserializer] in a [DefaultExternalResourceJsonDeserializer] to be able to deserialize a [URL] or a [RegularFile]

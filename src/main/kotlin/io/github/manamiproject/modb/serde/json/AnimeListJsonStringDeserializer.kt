@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 import java.net.URI
 
 /**
- * Can deserialize the manami-project anime-offline-database JSON provided as [String].
+ * Can deserialize the [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database) JSON provided as [String].
  * @since 5.0.0
  */
 public class AnimeListJsonStringDeserializer : JsonDeserializer<List<Anime>> {
