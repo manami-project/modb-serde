@@ -17,7 +17,7 @@ public interface ExternalResourceJsonDeserializer<out T> {
     public suspend fun deserialize(url: URL): T
 
     /**
-     * Deserializes content retrieved from an [RegularFile] to a [List] of objects of type [T].
+     * Deserializes content retrieved from a [RegularFile] to a [List] of objects of type [T].
      * @since 5.0.0
      * @return [List] of objects of type [T]
      */

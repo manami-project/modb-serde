@@ -1,6 +1,7 @@
 package io.github.manamiproject.modb.serde.json
 
 import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_CPU
+import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_FS
 import io.github.manamiproject.modb.core.extensions.RegularFile
 import io.github.manamiproject.modb.core.extensions.fileSuffix
 import io.github.manamiproject.modb.core.extensions.readFile
@@ -8,7 +9,6 @@ import io.github.manamiproject.modb.core.extensions.regularFileExists
 import io.github.manamiproject.modb.core.httpclient.DefaultHttpClient
 import io.github.manamiproject.modb.core.httpclient.HttpClient
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
-import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import java.net.URL
 import java.util.zip.ZipFile
@@ -47,13 +47,13 @@ public class DefaultExternalResourceJsonDeserializer<out T>(
         val response = httpClient.get(url)
 
         return@withContext when {
-            !response.isOk() -> throw IllegalStateException("Error downloading database file: HTTP response code was: [${response.code}]")
-            response.bodyAsText.isBlank() -> throw IllegalStateException("Error downloading database file: The response body was blank.")
+            !response.isOk() -> throw IllegalStateException("Error downloading file: HTTP response code was: [${response.code}]")
+            response.bodyAsText.isBlank() -> throw IllegalStateException("Error downloading file: The response body was blank.")
             else -> jsonDeserializer.deserialize(response.bodyAsText)
         }
     }
 
-    override suspend fun deserialize(file: RegularFile): T = withContext(LIMITED_CPU) {
+    override suspend fun deserialize(file: RegularFile): T = withContext(LIMITED_FS) {
         require(file.regularFileExists()) { "The given path does not exist or is not a regular file: [${file.toAbsolutePath()}]" }
 
         val content =  when(file.fileSuffix()) {
@@ -62,12 +62,12 @@ public class DefaultExternalResourceJsonDeserializer<out T>(
             else -> throw IllegalArgumentException("File is neither JSON nor zip file")
         }
 
-        log.info { "Reading database file" }
+        log.info { "Reading database file." }
 
         return@withContext jsonDeserializer.deserialize(content)
     }
 
-    private suspend fun readZip(file: RegularFile): String = withContext(IO) {
+    private suspend fun readZip(file: RegularFile): String = withContext(LIMITED_FS) {
         return@withContext ZipFile(file.toAbsolutePath().toString()).use { zip ->
             val zipEntries = zip.entries().toList()
             require(zipEntries.size == 1) { "The zip file contains more than one file." }
