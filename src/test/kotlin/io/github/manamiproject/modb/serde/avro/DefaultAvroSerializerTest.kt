@@ -6,7 +6,7 @@ import io.github.manamiproject.modb.core.models.AnimeSeason
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import java.net.URI
 import java.time.Clock
 import java.time.Instant

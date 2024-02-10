@@ -15,11 +15,11 @@ internal class AnimeListJsonDeserializerTest {
     @Test
     fun `throws exception if the given string is empty`() {
         // given
-        val defaultDatabaseFileParser = AnimeListJsonStringDeserializer()
+        val deserializer = AnimeListJsonStringDeserializer()
 
         // when
         val result = exceptionExpected<IllegalArgumentException> {
-            defaultDatabaseFileParser.deserialize(EMPTY)
+            deserializer.deserialize(EMPTY)
         }
 
         // then
@@ -29,11 +29,11 @@ internal class AnimeListJsonDeserializerTest {
     @Test
     fun `throws exception if the given string is blank`() {
         // given
-        val defaultDatabaseFileParser = AnimeListJsonStringDeserializer()
+        val deserializer = AnimeListJsonStringDeserializer()
 
         // when
         val result = exceptionExpected<IllegalArgumentException> {
-            defaultDatabaseFileParser.deserialize("    ")
+            deserializer.deserialize("    ")
         }
 
         // then
@@ -44,7 +44,7 @@ internal class AnimeListJsonDeserializerTest {
     fun `correctly parse database string`() {
         runBlocking {
             // given
-            val defaultDatabaseFileParser = AnimeListJsonStringDeserializer()
+            val deserializer = AnimeListJsonStringDeserializer()
 
             val expectedEntries = listOf(
                 Anime(
@@ -222,7 +222,7 @@ internal class AnimeListJsonDeserializerTest {
             )
 
             // when
-            val result = defaultDatabaseFileParser.deserialize(loadTestResource("json/deserialization/test_db_for_deserialization.json"))
+            val result = deserializer.deserialize(loadTestResource("json/deserialization/test_dataset_for_deserialization.json"))
 
             // then
             assertThat(result).containsAll(expectedEntries)

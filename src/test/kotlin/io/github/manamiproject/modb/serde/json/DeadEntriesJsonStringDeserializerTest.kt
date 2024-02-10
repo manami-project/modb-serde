@@ -11,11 +11,11 @@ internal class DeadEntriesJsonStringDeserializerTest {
     @Test
     fun `throws exception if the json string is empty`() {
         // given
-        val deadEntriesFileParser = DeadEntriesJsonStringDeserializer()
+        val deserializer = DeadEntriesJsonStringDeserializer()
 
         // when
         val result = exceptionExpected<IllegalArgumentException> {
-            deadEntriesFileParser.deserialize(EMPTY)
+            deserializer.deserialize(EMPTY)
         }
 
         // then
@@ -25,11 +25,11 @@ internal class DeadEntriesJsonStringDeserializerTest {
     @Test
     fun `throws exception if the json string is blank`() {
         // given
-        val deadEntriesFileParser = DeadEntriesJsonStringDeserializer()
+        val deserializer = DeadEntriesJsonStringDeserializer()
 
         // when
         val result = exceptionExpected<IllegalArgumentException> {
-            deadEntriesFileParser.deserialize("    ")
+            deserializer.deserialize("    ")
         }
 
         // then
@@ -40,15 +40,15 @@ internal class DeadEntriesJsonStringDeserializerTest {
     fun `return empty list of the json array is empty`() {
         runBlocking {
             // given
-            val deadEntriesFileParser = DeadEntriesJsonStringDeserializer()
+            val deserializer = DeadEntriesJsonStringDeserializer()
             val json = """
-            {
-                "deadEntries": []
-            }
-        """.trimIndent()
+                {
+                    "deadEntries": []
+                }
+            """.trimIndent()
 
             // when
-            val result = deadEntriesFileParser.deserialize(json)
+            val result = deserializer.deserialize(json)
 
             // then
             assertThat(result).isEmpty()
@@ -59,7 +59,7 @@ internal class DeadEntriesJsonStringDeserializerTest {
     fun `correctly parse list of String`() {
         runBlocking {
             // given
-            val deadEntriesFileParser = DeadEntriesJsonStringDeserializer()
+            val deserializer = DeadEntriesJsonStringDeserializer()
             val json = """
             {
                 "deadEntries": [
@@ -73,7 +73,7 @@ internal class DeadEntriesJsonStringDeserializerTest {
         """.trimIndent()
 
             // when
-            val result = deadEntriesFileParser.deserialize(json)
+            val result = deserializer.deserialize(json)
 
             // then
             assertThat(result).containsExactlyInAnyOrder(
