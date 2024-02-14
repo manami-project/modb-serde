@@ -85,7 +85,7 @@ public class DefaultAvroSerializer(
         log.debug { "Serializing dataset into avro format." }
 
         Avro.default.openOutputStream(DatasetModel.serializer()) {
-            encodeFormat = AvroEncodeFormat.Data(CodecFactory.zstandardCodec(16))
+            encodeFormat = AvroEncodeFormat.Data(CodecFactory.zstandardCodec(16, true, true))
             schema = datasetSchema
         }.to(outputStream).use {
             it.write(dataSet)
@@ -104,7 +104,7 @@ public class DefaultAvroSerializer(
         log.debug { "Serializing dead entries into avro format." }
 
         Avro.default.openOutputStream(DeadEntriesModel.serializer()) {
-            encodeFormat = AvroEncodeFormat.Data(CodecFactory.zstandardCodec(16))
+            encodeFormat = AvroEncodeFormat.Data(CodecFactory.zstandardCodec(16, true, true))
             schema = datasetSchema
         }.to(outputStream).use {
             it.write(avroDeadEntries)
