@@ -1,18 +1,14 @@
 package io.github.manamiproject.modb.serde.avro
 
 import com.github.avrokotlin.avro4k.Avro
-import com.github.avrokotlin.avro4k.io.AvroDecodeFormat
 import io.github.manamiproject.modb.core.collections.SortedList
 import io.github.manamiproject.modb.core.config.AnimeId
 import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_CPU
 import io.github.manamiproject.modb.core.models.Anime
 import io.github.manamiproject.modb.core.models.AnimeSeason
-import io.github.manamiproject.modb.serde.DatasetModel
-import io.github.manamiproject.modb.serde.DeadEntriesModel
-import io.github.manamiproject.modb.serde.SeasonModel
-import io.github.manamiproject.modb.serde.StatusModel
-import io.github.manamiproject.modb.serde.TypeModel
+import io.github.manamiproject.modb.serde.*
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.decodeFromByteArray
 import java.net.URI
 
 /**
@@ -26,17 +22,7 @@ public class DefaultAvroDeserializer : AvroDeserializer {
     override suspend fun deserializeAnimeList(animeList: ByteArray): List<Anime> = withContext(LIMITED_CPU) {
         require(animeList.isNotEmpty()) { "Given ByteArray must not be empty." }
 
-        val serializer = DatasetModel.serializer()
-        val datasetSchema = Avro.default.schema(serializer)
-        val content = mutableListOf<DatasetModel>()
-
-        Avro.default.openInputStream(serializer) {
-            decodeFormat = AvroDecodeFormat.Data(datasetSchema, datasetSchema)
-        }.from(animeList).use { stream ->
-            stream.iterator().asSequence().forEach { item -> content.add(item) }
-        }
-
-        return@withContext content.first().data.map { entry ->
+        Avro.default.decodeFromByteArray<DatasetModel>(animeList).data.map { entry ->
             Anime(
                 _title = entry.title,
                 sources = SortedList(entry.sources.map { urlString -> URI(urlString) }.toMutableList()),
@@ -77,16 +63,6 @@ public class DefaultAvroDeserializer : AvroDeserializer {
     override suspend fun deserializeDeadEntries(deadEntries: ByteArray): List<AnimeId> = withContext(LIMITED_CPU) {
         require(deadEntries.isNotEmpty()) { "Given ByteArray must not be empty." }
 
-        val serializer = DeadEntriesModel.serializer()
-        val datasetSchema = Avro.default.schema(serializer)
-        val content = mutableListOf<DeadEntriesModel>()
-
-        Avro.default.openInputStream(serializer) {
-            decodeFormat = AvroDecodeFormat.Data(datasetSchema, datasetSchema)
-        }.from(deadEntries).use { stream ->
-            stream.iterator().asSequence().forEach { item -> content.add(item) }
-        }
-
-        return@withContext content.first().deadEntries.sorted()
+        return@withContext Avro.default.decodeFromByteArray<DeadEntriesModel>(deadEntries).deadEntries.sorted()
     }
 }
