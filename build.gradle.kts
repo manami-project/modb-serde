@@ -43,7 +43,7 @@ dependencies {
     implementation("com.github.luben:zstd-jni:1.5.5-11")
 
     testImplementation("ch.qos.logback:logback-classic:1.5.0")
-    testImplementation("io.github.manamiproject:modb-test:1.6.1")
+    testImplementation("io.github.manamiproject:modb-test:1.6.2")
 }
 
 kotlin {
