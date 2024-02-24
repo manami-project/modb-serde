@@ -19,7 +19,7 @@ internal class DeadEntriesJsonStringDeserializerTest {
         }
 
         // then
-        assertThat(result).hasMessage("Given json string must not be blank.")
+        assertThat(result).hasMessage("Given JSON string must not be blank.")
     }
 
     @Test
@@ -33,7 +33,7 @@ internal class DeadEntriesJsonStringDeserializerTest {
         }
 
         // then
-        assertThat(result).hasMessage("Given json string must not be blank.")
+        assertThat(result).hasMessage("Given JSON string must not be blank.")
     }
 
     @Test
@@ -43,7 +43,13 @@ internal class DeadEntriesJsonStringDeserializerTest {
             val deserializer = DeadEntriesJsonStringDeserializer()
             val json = """
                 {
-                    "deadEntries": []
+                  "license": {
+                    "name": "GNU Affero General Public License v3.0",
+                    "url": "https://github.com/manami-project/anime-offline-database/blob/master/LICENSE"
+                  },
+                  "repository": "https://github.com/manami-project/anime-offline-database",
+                  "lastUpdate": "2020-01-01",
+                  "deadEntries": []
                 }
             """.trimIndent()
 
@@ -51,7 +57,7 @@ internal class DeadEntriesJsonStringDeserializerTest {
             val result = deserializer.deserialize(json)
 
             // then
-            assertThat(result).isEmpty()
+            assertThat(result.deadEntries).isEmpty()
         }
     }
 
@@ -61,22 +67,28 @@ internal class DeadEntriesJsonStringDeserializerTest {
             // given
             val deserializer = DeadEntriesJsonStringDeserializer()
             val json = """
-            {
-                "deadEntries": [
+                {
+                  "license": {
+                    "name": "GNU Affero General Public License v3.0",
+                    "url": "https://github.com/manami-project/anime-offline-database/blob/master/LICENSE"
+                  },
+                  "repository": "https://github.com/manami-project/anime-offline-database",
+                  "lastUpdate": "2020-01-01",
+                  "deadEntries": [
                     "kj42fc5--",
                     "lkn6--k44",
                     "l2ht33--1",
                     "1kj5g--41",
                     "3jl253vv9"
-                ]
-            }
-        """.trimIndent()
+                  ]
+                }
+            """.trimIndent()
 
             // when
             val result = deserializer.deserialize(json)
 
             // then
-            assertThat(result).containsExactlyInAnyOrder(
+            assertThat(result.deadEntries).containsExactlyInAnyOrder(
                 "kj42fc5--",
                 "lkn6--k44",
                 "l2ht33--1",

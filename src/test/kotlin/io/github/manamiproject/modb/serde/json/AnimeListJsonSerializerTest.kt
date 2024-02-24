@@ -21,32 +21,32 @@ internal class AnimeListJsonSerializerTest {
             runBlocking {
                 // given
                 val expectedContent = """
-                {
-                  "license": {
-                    "name": "GNU Affero General Public License v3.0",
-                    "url": "https://github.com/manami-project/anime-offline-database/blob/master/LICENSE"
-                  },
-                  "repository": "https://github.com/manami-project/anime-offline-database",
-                  "lastUpdate": "2020-01-01",
-                  "data": [
                     {
-                      "sources": [],
-                      "title": "Death Note",
-                      "type": "TV",
-                      "episodes": 0,
-                      "status": "UNKNOWN",
-                      "animeSeason": {
-                        "season": "UNDEFINED",
-                        "year": null
+                      "license": {
+                        "name": "GNU Affero General Public License v3.0",
+                        "url": "https://github.com/manami-project/anime-offline-database/blob/master/LICENSE"
                       },
-                      "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
-                      "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
-                      "synonyms": [],
-                      "relations": [],
-                      "tags": []
+                      "repository": "https://github.com/manami-project/anime-offline-database",
+                      "lastUpdate": "2020-01-01",
+                      "data": [
+                        {
+                          "sources": [],
+                          "title": "Death Note",
+                          "type": "UNKNOWN",
+                          "episodes": 0,
+                          "status": "UNKNOWN",
+                          "animeSeason": {
+                            "season": "UNDEFINED",
+                            "year": null
+                          },
+                          "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
+                          "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "synonyms": [],
+                          "relatedAnime": [],
+                          "tags": []
+                        }
+                      ]
                     }
-                  ]
-                }
                 """.trimIndent()
 
                 val clock = Clock.fixed(Instant.parse("2020-01-01T16:02:42.00Z"), UTC)
@@ -69,7 +69,7 @@ internal class AnimeListJsonSerializerTest {
             runBlocking {
                 // given
                 val expectedContent = """
-                    {"license":{"name":"GNU Affero General Public License v3.0","url":"https://github.com/manami-project/anime-offline-database/blob/master/LICENSE"},"repository":"https://github.com/manami-project/anime-offline-database","lastUpdate":"2020-01-01","data":[{"sources":[],"title":"Death Note","type":"TV","episodes":0,"status":"UNKNOWN","animeSeason":{"season":"UNDEFINED"},"picture":"https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png","thumbnail":"https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png","synonyms":[],"relations":[],"tags":[]}]}
+                    {"license":{"name":"GNU Affero General Public License v3.0","url":"https://github.com/manami-project/anime-offline-database/blob/master/LICENSE"},"repository":"https://github.com/manami-project/anime-offline-database","lastUpdate":"2020-01-01","data":[{"sources":[],"title":"Death Note","type":"UNKNOWN","episodes":0,"status":"UNKNOWN","animeSeason":{"season":"UNDEFINED"},"picture":"https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png","thumbnail":"https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png","synonyms":[],"relatedAnime":[],"tags":[]}]}
                 """.trimIndent()
 
                 val clock = Clock.fixed(Instant.parse("2020-01-01T16:02:42.00Z"), UTC)
@@ -80,7 +80,10 @@ internal class AnimeListJsonSerializerTest {
                 )
 
                 // when
-                val result = serializer.serialize(animeList)
+                val result = serializer.serialize(
+                    obj = animeList,
+                    minify = true,
+                )
 
                 // then
                 assertThat(result).isEqualTo(expectedContent)
@@ -119,7 +122,7 @@ internal class AnimeListJsonSerializerTest {
                             "Clannad: After Story OVA",
                             "クラナド　アフターストーリー　もうひとつの世界　杏編"
                           ],
-                          "relations": [
+                          "relatedAnime": [
                             "https://myanimelist.net/anime/2167"
                           ],
                           "tags": [
@@ -160,7 +163,7 @@ internal class AnimeListJsonSerializerTest {
                                 "クラナド　アフターストーリー　もうひとつの世界　杏編"
                             )
                         )
-                        addRelations(listOf(URI("https://myanimelist.net/anime/2167")))
+                        addRelatedAnime(listOf(URI("https://myanimelist.net/anime/2167")))
                         addTags(
                             listOf(
                                 "comedy",
@@ -202,7 +205,7 @@ internal class AnimeListJsonSerializerTest {
                         {
                           "sources": [],
                           "title": "A",
-                          "type": "TV",
+                          "type": "UNKNOWN",
                           "episodes": 0,
                           "status": "UNKNOWN",
                           "animeSeason": {
@@ -212,13 +215,13 @@ internal class AnimeListJsonSerializerTest {
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
-                          "relations": [],
+                          "relatedAnime": [],
                           "tags": []
                         },
                         {
                           "sources": [],
                           "title": "B",
-                          "type": "TV",
+                          "type": "UNKNOWN",
                           "episodes": 0,
                           "status": "UNKNOWN",
                           "animeSeason": {
@@ -228,13 +231,13 @@ internal class AnimeListJsonSerializerTest {
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
-                          "relations": [],
+                          "relatedAnime": [],
                           "tags": []
                         },
                         {
                           "sources": [],
                           "title": "C",
-                          "type": "TV",
+                          "type": "UNKNOWN",
                           "episodes": 0,
                           "status": "UNKNOWN",
                           "animeSeason": {
@@ -244,7 +247,7 @@ internal class AnimeListJsonSerializerTest {
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
-                          "relations": [],
+                          "relatedAnime": [],
                           "tags": []
                         }
                       ]
@@ -294,7 +297,7 @@ internal class AnimeListJsonSerializerTest {
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
-                          "relations": [],
+                          "relatedAnime": [],
                           "tags": []
                         },
                         {
@@ -310,7 +313,7 @@ internal class AnimeListJsonSerializerTest {
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
-                          "relations": [],
+                          "relatedAnime": [],
                           "tags": []
                         },
                         {
@@ -326,7 +329,7 @@ internal class AnimeListJsonSerializerTest {
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
-                          "relations": [],
+                          "relatedAnime": [],
                           "tags": []
                         }
                       ]
@@ -348,7 +351,7 @@ internal class AnimeListJsonSerializerTest {
                     Anime(
                         _title = "test",
                         type = Anime.Type.MOVIE,
-                    )
+                    ),
                 )
 
                 // when
@@ -385,7 +388,7 @@ internal class AnimeListJsonSerializerTest {
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
-                          "relations": [],
+                          "relatedAnime": [],
                           "tags": []
                         },
                         {
@@ -401,7 +404,7 @@ internal class AnimeListJsonSerializerTest {
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
-                          "relations": [],
+                          "relatedAnime": [],
                           "tags": []
                         },
                         {
@@ -417,7 +420,7 @@ internal class AnimeListJsonSerializerTest {
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
-                          "relations": [],
+                          "relatedAnime": [],
                           "tags": []
                         }
                       ]
@@ -442,7 +445,7 @@ internal class AnimeListJsonSerializerTest {
                         _title = "test",
                         type = Anime.Type.TV,
                         episodes = 13,
-                    )
+                    ),
                 )
 
                 // when

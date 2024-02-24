@@ -2,6 +2,9 @@ package io.github.manamiproject.modb.serde.json
 
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneOffset.UTC
 import kotlin.test.Test
 
 internal class DeadEntriesJsonSerializerTest {
@@ -10,17 +13,18 @@ internal class DeadEntriesJsonSerializerTest {
     fun `correctly serialize minified`() {
         runBlocking {
             // given
-            val serializer = DeadEntriesJsonSerializer()
+            val clock = Clock.fixed(Instant.parse("2020-01-01T16:02:42.00Z"), UTC)
+            val serializer = DeadEntriesJsonSerializer(clock = clock)
             val list = setOf(
                 "1234",
                 "5678",
             )
 
             // when
-            val result = serializer.serialize(list)
+            val result = serializer.serialize(list, minify = true)
 
             // then
-            assertThat(result).isEqualTo("""{"deadEntries":["1234","5678"]}""")
+            assertThat(result).isEqualTo("""{"license":{"name":"GNU Affero General Public License v3.0","url":"https://github.com/manami-project/anime-offline-database/blob/master/LICENSE"},"repository":"https://github.com/manami-project/anime-offline-database","lastUpdate":"2020-01-01","deadEntries":["1234","5678"]}""".trimIndent())
         }
     }
 
@@ -28,7 +32,8 @@ internal class DeadEntriesJsonSerializerTest {
     fun `correctly serialize pretty print`() {
         runBlocking {
             // given
-            val serializer = DeadEntriesJsonSerializer()
+            val clock = Clock.fixed(Instant.parse("2020-01-01T16:02:42.00Z"), UTC)
+            val serializer = DeadEntriesJsonSerializer(clock = clock)
             val list = setOf(
                 "1234",
                 "5678",
@@ -40,6 +45,12 @@ internal class DeadEntriesJsonSerializerTest {
             // then
             assertThat(result).isEqualTo("""
                 {
+                  "license": {
+                    "name": "GNU Affero General Public License v3.0",
+                    "url": "https://github.com/manami-project/anime-offline-database/blob/master/LICENSE"
+                  },
+                  "repository": "https://github.com/manami-project/anime-offline-database",
+                  "lastUpdate": "2020-01-01",
                   "deadEntries": [
                     "1234",
                     "5678"
@@ -53,7 +64,8 @@ internal class DeadEntriesJsonSerializerTest {
     fun `results are sorted`() {
         runBlocking {
             // given
-            val serializer = DeadEntriesJsonSerializer()
+            val clock = Clock.fixed(Instant.parse("2020-01-01T16:02:42.00Z"), UTC)
+            val serializer = DeadEntriesJsonSerializer(clock = clock)
             val list = setOf(
                 "5678",
                 "1234",
@@ -63,7 +75,20 @@ internal class DeadEntriesJsonSerializerTest {
             val result = serializer.serialize(list)
 
             // then
-            assertThat(result).isEqualTo("""{"deadEntries":["1234","5678"]}""")
+            assertThat(result).isEqualTo("""
+                {
+                  "license": {
+                    "name": "GNU Affero General Public License v3.0",
+                    "url": "https://github.com/manami-project/anime-offline-database/blob/master/LICENSE"
+                  },
+                  "repository": "https://github.com/manami-project/anime-offline-database",
+                  "lastUpdate": "2020-01-01",
+                  "deadEntries": [
+                    "1234",
+                    "5678"
+                  ]
+                }
+            """.trimIndent())
         }
     }
 }

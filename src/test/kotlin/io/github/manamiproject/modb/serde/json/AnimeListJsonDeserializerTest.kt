@@ -49,6 +49,14 @@ internal class AnimeListJsonDeserializerTest {
             val expectedEntries = listOf(
                 Anime(
                     _title = "Seikai no Monshou",
+                    sources = hashSetOf(
+                        URI("https://anidb.net/anime/1"),
+                    ),
+                    relatedAnime = hashSetOf(
+                        URI("https://anidb.net/anime/1623"),
+                        URI("https://anidb.net/anime/4"),
+                        URI("https://anidb.net/anime/6"),
+                    ),
                     type = Anime.Type.TV,
                     episodes = 13,
                     picture = URI("https://cdn.anidb.net/images/main/224618.jpg"),
@@ -57,33 +65,34 @@ internal class AnimeListJsonDeserializerTest {
                     animeSeason = AnimeSeason(
                         season = AnimeSeason.Season.UNDEFINED,
                         year = 1999,
-                    )
-                ).apply {
-                    addSources(listOf(URI("https://anidb.net/anime/1")))
-                    addSynonyms(
+                    ),
+                    synonyms = hashSetOf(
                         "CotS",
                         "Crest of the Stars",
                         "Hvězdný erb",
                         "SnM",
                         "星界の紋章",
                         "星界之纹章",
-                    )
-                    addRelations(
-                        URI("https://anidb.net/anime/1623"),
-                        URI("https://anidb.net/anime/4"),
-                        URI("https://anidb.net/anime/6"),
-                    )
-                    addTags(
+                    ),
+                    tags = hashSetOf(
                         "action",
                         "adventure",
                         "genetic modification",
                         "novel",
                         "science fiction",
                         "space travel",
-                    )
-                },
+                    ),
+                ),
                 Anime(
                     _title = "Cowboy Bebop",
+                    sources = hashSetOf(
+                        URI("https://myanimelist.net/anime/1"),
+                    ),
+                    relatedAnime = hashSetOf(
+                        URI("https://myanimelist.net/anime/17205"),
+                        URI("https://myanimelist.net/anime/4037"),
+                        URI("https://myanimelist.net/anime/5"),
+                    ),
                     type = Anime.Type.TV,
                     episodes = 26,
                     picture = URI("https://cdn.myanimelist.net/images/anime/4/19644.jpg"),
@@ -92,26 +101,27 @@ internal class AnimeListJsonDeserializerTest {
                     animeSeason = AnimeSeason(
                         season = AnimeSeason.Season.SPRING,
                         year = 1998,
-                    )
-                ).apply {
-                    addSources(listOf(URI("https://myanimelist.net/anime/1")))
-                    addSynonyms(listOf("カウボーイビバップ"))
-                    addRelations(
-                        URI("https://myanimelist.net/anime/17205"),
-                        URI("https://myanimelist.net/anime/4037"),
-                        URI("https://myanimelist.net/anime/5"),
-                    )
-                    addTags(
+                    ),
+                    synonyms = hashSetOf(
+                        "カウボーイビバップ",
+                    ),
+                    tags = hashSetOf(
                         "action",
                         "adventure",
                         "comedy",
                         "drama",
                         "sci-fi",
                         "space",
-                    )
-                },
+                        ),
+                ),
                 Anime(
                     _title = "Cowboy Bebop: Tengoku no Tobira",
+                    sources = hashSetOf(
+                        URI("https://myanimelist.net/anime/5"),
+                    ),
+                    relatedAnime = hashSetOf(
+                        URI("https://myanimelist.net/anime/1"),
+                    ),
                     type = Anime.Type.MOVIE,
                     episodes = 1,
                     picture = URI("https://cdn.myanimelist.net/images/anime/1439/93480.jpg"),
@@ -120,24 +130,24 @@ internal class AnimeListJsonDeserializerTest {
                     animeSeason = AnimeSeason(
                         season = AnimeSeason.Season.SPRING,
                         year = 1998,
-                    )
-                ).apply {
-                    addSources(URI("https://myanimelist.net/anime/5"))
-                    addRelations(URI("https://myanimelist.net/anime/1"))
-                    addSynonyms(
+                    ),
+                    synonyms = hashSetOf(
                         "Cowboy Bebop: Knockin' on Heaven's Door",
                         "Cowboy Bebop: The Movie", "カウボーイビバップ 天国の扉",
-                    )
-                    addTags(
+                    ),
+                    tags = hashSetOf(
                         "action",
                         "drama",
                         "mystery",
                         "sci-fi",
                         "space",
-                    )
-                },
+                    ),
+                ),
                 Anime(
                     _title = "11 Eyes",
+                    sources = hashSetOf(
+                        URI("https://anidb.net/anime/6751"),
+                    ),
                     type = Anime.Type.TV,
                     episodes = 12,
                     picture = URI("https://cdn.anidb.net/images/main/32901.jpg"),
@@ -146,10 +156,8 @@ internal class AnimeListJsonDeserializerTest {
                     animeSeason = AnimeSeason(
                         season = AnimeSeason.Season.UNDEFINED,
                         year = 2009,
-                    )
-                ).apply {
-                    addSources(listOf(URI("https://anidb.net/anime/6751")))
-                    addSynonyms(
+                    ),
+                    synonyms = hashSetOf(
                         "11 akių",
                         "11 глаз",
                         "11 چشم",
@@ -159,8 +167,8 @@ internal class AnimeListJsonDeserializerTest {
                         "أحد عشر عيناً",
                         "イレブンアイズ",
                         "罪与罚与赎的少女",
-                    )
-                    addTags(
+                    ),
+                    tags = hashSetOf(
                         "action",
                         "angst",
                         "contemporary fantasy",
@@ -172,10 +180,20 @@ internal class AnimeListJsonDeserializerTest {
                         "super power",
                         "swordplay",
                         "visual novel",
-                    )
-                },
+                    ),
+                ),
                 Anime(
                     _title = "11eyes",
+                    sources = hashSetOf(
+                        URI("https://anilist.co/anime/6682"),
+                        URI("https://myanimelist.net/anime/6682"),
+                    ),
+                    relatedAnime = hashSetOf(
+                        URI("https://anilist.co/anime/110465"),
+                        URI("https://anilist.co/anime/7739"),
+                        URI("https://myanimelist.net/anime/20557"),
+                        URI("https://myanimelist.net/anime/7739"),
+                    ),
                     type = Anime.Type.TV,
                     episodes = 12,
                     picture = URI("https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6682-ZptgLsCCNHjL.jpg"),
@@ -184,24 +202,13 @@ internal class AnimeListJsonDeserializerTest {
                     animeSeason = AnimeSeason(
                         season = AnimeSeason.Season.FALL,
                         year = 2009,
-                    )
-                ).apply {
-                    addSources(
-                        URI("https://anilist.co/anime/6682"),
-                        URI("https://myanimelist.net/anime/6682"),
-                    )
-                    addSynonyms(
+                    ),
+                    synonyms = hashSetOf(
                         "11eyes -Tsumi to Batsu to Aganai no Shoujo-",
                         "11eyes イレブンアイズ",
                         "イレブンアイズ",
-                    )
-                    addRelations(
-                        URI("https://anilist.co/anime/110465"),
-                        URI("https://anilist.co/anime/7739"),
-                        URI("https://myanimelist.net/anime/20557"),
-                        URI("https://myanimelist.net/anime/7739"),
-                    )
-                    addTags(
+                    ),
+                    tags = hashSetOf(
                         "action",
                         "demons",
                         "ecchi",
@@ -217,15 +224,15 @@ internal class AnimeListJsonDeserializerTest {
                         "swordplay",
                         "tragedy",
                         "witch",
-                    )
-                }
+                    ),
+                ),
             )
 
             // when
             val result = deserializer.deserialize(loadTestResource("json/deserialization/test_dataset_for_deserialization.json"))
 
             // then
-            assertThat(result).containsAll(expectedEntries)
+            assertThat(result.data).containsAll(expectedEntries)
         }
     }
 }
