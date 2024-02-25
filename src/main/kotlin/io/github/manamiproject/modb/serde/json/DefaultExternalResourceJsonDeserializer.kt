@@ -2,25 +2,27 @@ package io.github.manamiproject.modb.serde.json
 
 import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_CPU
 import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_FS
-import io.github.manamiproject.modb.core.extensions.RegularFile
-import io.github.manamiproject.modb.core.extensions.fileSuffix
-import io.github.manamiproject.modb.core.extensions.readFile
-import io.github.manamiproject.modb.core.extensions.regularFileExists
+import io.github.manamiproject.modb.core.extensions.*
 import io.github.manamiproject.modb.core.httpclient.DefaultHttpClient
 import io.github.manamiproject.modb.core.httpclient.HttpClient
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayInputStream
 import java.net.URL
+import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
+import java.util.zip.ZipInputStream
+
 
 /**
  * # What it does
  * + Can download JSON files from [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database) via HTTPS and deserialize them.
+ * + Can download JSON files provided as zip file from [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database) via HTTPS and deserialize them.
  * + Can deserialize the files from [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database) as local JSON file.
  * + Can deserialize the files from [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database) as local JSON file if it is provided as zip file.
  *
  * # Usage
- * Wrap an instance of [JsonDeserializer] in a [DefaultExternalResourceJsonDeserializer] to be able to deserialize a [URL] or a [RegularFile]
+ * Wrap an instance of [JsonDeserializer] in a [DefaultExternalResourceJsonDeserializer] to be able to deserialize a [URL] or a [RegularFile].
  * ```kotlin
  * val animeListDeserializer = DefaultExternalResourceJsonDeserializer<List<Anime>>(deserializer = AnimeListJsonStringDeserializer())
  * val deadEntriesDeserializer = DefaultExternalResourceJsonDeserializer<List<AnimeId>>(deserializer = DeadEntriesJsonStringDeserializer())
@@ -47,9 +49,13 @@ public class DefaultExternalResourceJsonDeserializer<out T>(
 
         val response = httpClient.get(url)
 
-        return@withContext when {
+        when {
             !response.isOk() -> throw IllegalStateException("Error downloading file: HTTP response code was: [${response.code}]")
-            response.bodyAsText.isBlank() -> throw IllegalStateException("Error downloading file: The response body was blank.")
+            response.body.isEmpty() || response.bodyAsText.isBlank() -> throw IllegalStateException("Error downloading file: The response body was blank.")
+        }
+
+        return@withContext when {
+            response.headers["content-type"]?.contains("application/zip") == true -> deserializer.deserialize(readZip(response.body))
             else -> deserializer.deserialize(response.bodyAsText)
         }
     }
@@ -59,7 +65,7 @@ public class DefaultExternalResourceJsonDeserializer<out T>(
 
         val content =  when(file.fileSuffix()) {
             "json" -> file.readFile()
-            "zip" -> readZip(file)
+            "zip" -> readZipFile(file)
             else -> throw IllegalArgumentException("File is neither JSON nor zip file")
         }
 
@@ -68,7 +74,7 @@ public class DefaultExternalResourceJsonDeserializer<out T>(
         return@withContext deserializer.deserialize(content)
     }
 
-    private suspend fun readZip(file: RegularFile): String = withContext(LIMITED_FS) {
+    private suspend fun readZipFile(file: RegularFile): String = withContext(LIMITED_FS) {
         return@withContext ZipFile(file.toAbsolutePath().toString()).use { zip ->
             val zipEntries = zip.entries().toList()
             require(zipEntries.size == 1) { "The zip file contains more than one file." }
@@ -80,6 +86,31 @@ public class DefaultExternalResourceJsonDeserializer<out T>(
                 reader.readText()
             }
         }
+    }
+
+    private suspend fun readZip(bytes: ByteArray): String = withContext(LIMITED_CPU) {
+        var ret = EMPTY
+        ZipInputStream(ByteArrayInputStream(bytes)).use { zis ->
+            val entry: ZipEntry = zis.nextEntry!!
+
+            if (entry.isDirectory) {
+                throw IllegalStateException("Zip file contains directory: [${entry.name}]")
+            }
+
+            if (!entry.name.endsWith(".json")) {
+                throw IllegalStateException("File inside downloaded zip file is not a JSON file: [${entry.name}]")
+            }
+
+            ret = zis.bufferedReader().readText()
+
+            if (zis.nextEntry != null) {
+                zis.closeEntry()
+                throw IllegalStateException("Zip file contains more than two files.")
+            }
+
+            zis.closeEntry()
+        }
+        return@withContext ret
     }
 
     private companion object {

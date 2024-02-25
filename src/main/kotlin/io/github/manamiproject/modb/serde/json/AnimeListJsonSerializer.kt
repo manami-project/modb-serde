@@ -5,6 +5,7 @@ import io.github.manamiproject.modb.core.json.Json
 import io.github.manamiproject.modb.core.json.Json.SerializationOptions.*
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
 import io.github.manamiproject.modb.core.models.Anime
+import io.github.manamiproject.modb.serde.json.models.Dataset
 import kotlinx.coroutines.withContext
 import java.time.Clock
 import java.time.LocalDate
@@ -25,7 +26,7 @@ public class AnimeListJsonSerializer(
 
         val sortedList = obj.toSet().sortedWith(compareBy({ it.title.lowercase() }, {it.type}, { it.episodes }))
 
-        val data = DatasetModel(
+        val data = Dataset(
             data = sortedList,
             lastUpdate = LocalDate.now(clock).format(ISO_DATE),
         )

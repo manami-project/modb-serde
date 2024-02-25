@@ -6,6 +6,7 @@ import io.github.manamiproject.modb.core.json.Json
 import io.github.manamiproject.modb.core.json.Json.SerializationOptions.DEACTIVATE_PRETTY_PRINT
 import io.github.manamiproject.modb.core.json.Json.SerializationOptions.DEACTIVATE_SERIALIZE_NULL
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
+import io.github.manamiproject.modb.serde.json.models.DeadEntries
 import kotlinx.coroutines.withContext
 import java.time.Clock
 import java.time.LocalDate
@@ -24,7 +25,7 @@ public class DeadEntriesJsonSerializer(
     override suspend fun serialize(obj: Collection<AnimeId>, minify: Boolean): String = withContext(LIMITED_CPU) {
         log.debug { "Sorting dead entries" }
 
-        val deadEntriesDocument = DeadEntriesModel(
+        val deadEntriesDocument = DeadEntries(
             lastUpdate = LocalDate.now(clock).format(ISO_DATE),
             deadEntries = obj.toSet().sorted(),
         )
