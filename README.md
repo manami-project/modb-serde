@@ -32,5 +32,5 @@ The `DefaultExternalResourceJsonDeserializer` can also handle zipped files, but 
 
 ```kotlin
 val deserializer = DefaultExternalResourceJsonDeserializer<Anime>(deserializer = AnimeListJsonStringDeserializer())
-val allAnime: List<Anime> = deserializer.deserialize(URI("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database.json").toURL())
+val allAnime: List<Dataset> = deserializer.deserialize(URI("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database.json").toURL())
 ```

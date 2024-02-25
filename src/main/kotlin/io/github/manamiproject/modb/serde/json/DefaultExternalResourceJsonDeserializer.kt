@@ -33,7 +33,7 @@ import java.util.zip.ZipInputStream
  * **Example:**
  * ```kotlin
  * val deserializer = DefaultExternalResourceJsonDeserializer<List<Anime>>(deserializer = AnimeListJsonStringDeserializer())
- * val allAnime: List<Anime> = deserializer.deserialize(URI("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database-minified.json").toURL())
+ * val allAnime: List<Dataset> = deserializer.deserialize(URI("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database-minified.json").toURL())
  * ```
  * @since 5.0.0
  * @param httpClient Used to download given [URL]s
