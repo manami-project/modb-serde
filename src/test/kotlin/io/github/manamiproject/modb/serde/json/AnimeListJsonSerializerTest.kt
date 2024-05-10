@@ -39,8 +39,8 @@ internal class AnimeListJsonSerializerTest {
                             "season": "UNDEFINED",
                             "year": null
                           },
-                          "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
-                          "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "picture": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic.png",
+                          "thumbnail": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -69,7 +69,7 @@ internal class AnimeListJsonSerializerTest {
             runBlocking {
                 // given
                 val expectedContent = """
-                    {"license":{"name":"GNU Affero General Public License v3.0","url":"https://github.com/manami-project/anime-offline-database/blob/master/LICENSE"},"repository":"https://github.com/manami-project/anime-offline-database","lastUpdate":"2020-01-01","data":[{"sources":[],"title":"Death Note","type":"UNKNOWN","episodes":0,"status":"UNKNOWN","animeSeason":{"season":"UNDEFINED"},"picture":"https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png","thumbnail":"https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png","synonyms":[],"relatedAnime":[],"tags":[]}]}
+                    {"license":{"name":"GNU Affero General Public License v3.0","url":"https://github.com/manami-project/anime-offline-database/blob/master/LICENSE"},"repository":"https://github.com/manami-project/anime-offline-database","lastUpdate":"2020-01-01","data":[{"sources":[],"title":"Death Note","type":"UNKNOWN","episodes":0,"status":"UNKNOWN","animeSeason":{"season":"UNDEFINED"},"picture":"https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic.png","thumbnail":"https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic_thumbnail.png","synonyms":[],"relatedAnime":[],"tags":[]}]}
                 """.trimIndent()
 
                 val clock = Clock.fixed(Instant.parse("2020-01-01T16:02:42.00Z"), UTC)
@@ -212,8 +212,8 @@ internal class AnimeListJsonSerializerTest {
                             "season": "UNDEFINED",
                             "year": null
                           },
-                          "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
-                          "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "picture": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic.png",
+                          "thumbnail": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -228,8 +228,8 @@ internal class AnimeListJsonSerializerTest {
                             "season": "UNDEFINED",
                             "year": null
                           },
-                          "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
-                          "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "picture": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic.png",
+                          "thumbnail": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -244,8 +244,8 @@ internal class AnimeListJsonSerializerTest {
                             "season": "UNDEFINED",
                             "year": null
                           },
-                          "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
-                          "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "picture": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic.png",
+                          "thumbnail": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -294,8 +294,8 @@ internal class AnimeListJsonSerializerTest {
                             "season": "UNDEFINED",
                             "year": null
                           },
-                          "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
-                          "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "picture": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic.png",
+                          "thumbnail": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -310,8 +310,8 @@ internal class AnimeListJsonSerializerTest {
                             "season": "UNDEFINED",
                             "year": null
                           },
-                          "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
-                          "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "picture": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic.png",
+                          "thumbnail": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -326,8 +326,8 @@ internal class AnimeListJsonSerializerTest {
                             "season": "UNDEFINED",
                             "year": null
                           },
-                          "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
-                          "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "picture": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic.png",
+                          "thumbnail": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -385,8 +385,8 @@ internal class AnimeListJsonSerializerTest {
                             "season": "UNDEFINED",
                             "year": null
                           },
-                          "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
-                          "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "picture": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic.png",
+                          "thumbnail": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -401,8 +401,8 @@ internal class AnimeListJsonSerializerTest {
                             "season": "UNDEFINED",
                             "year": null
                           },
-                          "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
-                          "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "picture": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic.png",
+                          "thumbnail": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -417,8 +417,8 @@ internal class AnimeListJsonSerializerTest {
                             "season": "UNDEFINED",
                             "year": null
                           },
-                          "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
-                          "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "picture": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic.png",
+                          "thumbnail": "https://github.com/manami-project/anime-offline-database/raw/master/pics/no_pic_thumbnail.png",
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
