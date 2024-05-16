@@ -20,9 +20,9 @@ val deadEntriesDeserializer = DeadEntriesJsonStringDeserializer()
 Wrap the instance above in a `ExternalResourceJsonDeserializer` to be able to deserialize a `URL` or a `Path`
 
 ```kotlin
-val animeDatasetFileDeserializer = DefaultExternalResourceJsonDeserializer<Anime>(deserializer = AnimeListJsonStringDeserializer())
+val animeDatasetFileDeserializer = DefaultExternalResourceJsonDeserializer<Dataset>(deserializer = AnimeListJsonStringDeserializer())
 
-val deadEntriesFileDeserializer = DefaultExternalResourceJsonDeserializer<AnimeId>(deserializer = DeadEntriesJsonStringDeserializer())
+val deadEntriesFileDeserializer = DefaultExternalResourceJsonDeserializer<DeadEntries>(deserializer = DeadEntriesJsonStringDeserializer())
 ```
 
 Now you can either deserialize the anime dataset file or a dead entries file by using a `URL` or a `Path`.
@@ -31,6 +31,7 @@ The `DefaultExternalResourceJsonDeserializer` can also handle zipped files, but 
 *Example:*
 
 ```kotlin
-val deserializer = DefaultExternalResourceJsonDeserializer<Anime>(deserializer = AnimeListJsonStringDeserializer())
-val allAnime: List<Dataset> = deserializer.deserialize(URI("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database.json").toURL())
+val deserializer = DefaultExternalResourceJsonDeserializer<Dataset>(deserializer = AnimeListJsonStringDeserializer())
+val dataset: Dataset = deserializer.deserialize(URI("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database.json").toURL())
+val allAnime = dataset.data
 ```
