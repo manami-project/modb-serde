@@ -1,6 +1,7 @@
 package io.github.manamiproject.modb.serde.json
 
 import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_CPU
+import io.github.manamiproject.modb.core.extensions.neitherNullNorBlank
 import io.github.manamiproject.modb.core.json.Json
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
 import io.github.manamiproject.modb.serde.json.models.Dataset
@@ -13,7 +14,7 @@ import kotlinx.coroutines.withContext
 public class AnimeListJsonStringDeserializer : JsonDeserializer<Dataset> {
 
     override suspend fun deserialize(json: String): Dataset = withContext(LIMITED_CPU) {
-        require(json.isNotBlank()) { "Given JSON string must not be blank." }
+        require(json.neitherNullNorBlank()) { "Given JSON string must not be blank." }
 
         log.info { "Deserializing dataset" }
 

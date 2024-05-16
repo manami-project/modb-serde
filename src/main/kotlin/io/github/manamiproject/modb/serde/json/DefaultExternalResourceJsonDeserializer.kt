@@ -51,7 +51,7 @@ public class DefaultExternalResourceJsonDeserializer<out T>(
 
         when {
             !response.isOk() -> throw IllegalStateException("Error downloading file: HTTP response code was: [${response.code}]")
-            response.body.isEmpty() || response.bodyAsText.isBlank() -> throw IllegalStateException("Error downloading file: The response body was blank.")
+            response.body.isEmpty() || response.bodyAsText.eitherNullOrBlank() -> throw IllegalStateException("Error downloading file: The response body was blank.")
         }
 
         return@withContext when {
