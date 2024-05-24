@@ -1,4 +1,4 @@
-![Build](https://github.com/manami-project/modb-serde/actions/workflows/build.yml/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/manami-project/modb-serde/badge.svg)](https://coveralls.io/github/manami-project/modb-serde) ![jdk21](https://img.shields.io/badge/jdk-21-informational)
+[![Tests](https://github.com/manami-project/modb-serde/actions/workflows/tests.yml/badge.svg)](https://github.com/manami-project/modb-serde/actions/workflows/tests.yml) [![codecov](https://codecov.io/gh/manami-project/modb-serde/graph/badge.svg?token=HXK1WKA3N8)](https://codecov.io/gh/manami-project/modb-serde) ![jdk21](https://img.shields.io/badge/jdk-21-informational)
 # modb-serde
 _[modb](https://github.com/manami-project?tab=repositories&q=modb&type=source)_ stands for _**M**anami **O**ffline **D**ata**B**ase_. Repositories prefixed with this acronym are used to create the [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database).
 
