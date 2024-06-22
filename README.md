@@ -2,10 +2,10 @@
 # modb-serde
 _[modb](https://github.com/manami-project?tab=repositories&q=modb&type=source)_ stands for _**M**anami **O**ffline **D**ata**B**ase_. Repositories prefixed with this acronym are used to create the [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database).
 
-# What does this lib do?
+## What does this lib do?
 This lib can serialize and deserialize (serde) both the anime dataset file as well as the files for the dead entries.
  
-# Usage
+## Usage
 
 Create an instance of the respective `JsonSerializer`:
 
