@@ -456,4 +456,21 @@ internal class AnimeListJsonSerializerTest {
             }
         }
     }
+
+    @Nested
+    inner class CompanionObjectTests {
+
+        @Test
+        fun `instance property always returns same instance`() {
+            // given
+            val previous = AnimeListJsonSerializer.instance
+
+            // when
+            val result = AnimeListJsonSerializer.instance
+
+            // then
+            assertThat(result).isExactlyInstanceOf(AnimeListJsonSerializer::class.java)
+            assertThat(result===previous).isTrue()
+        }
+    }
 }

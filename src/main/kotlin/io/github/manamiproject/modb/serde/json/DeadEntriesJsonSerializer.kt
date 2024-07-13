@@ -39,7 +39,13 @@ public class DeadEntriesJsonSerializer(
         }
     }
 
-    private companion object {
+    public companion object {
         private val log by LoggerDelegate()
+
+        /**
+         * Singleton of [DeadEntriesJsonSerializer]
+         * @since 5.2.0
+         */
+        public val instance: DeadEntriesJsonSerializer by lazy { DeadEntriesJsonSerializer() }
     }
 }

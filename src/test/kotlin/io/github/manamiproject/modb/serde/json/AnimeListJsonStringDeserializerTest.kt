@@ -7,10 +7,11 @@ import io.github.manamiproject.modb.test.exceptionExpected
 import io.github.manamiproject.modb.test.loadTestResource
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Nested
 import java.net.URI
 import kotlin.test.Test
 
-internal class AnimeListJsonDeserializerTest {
+internal class AnimeListJsonStringDeserializerTest {
 
     @Test
     fun `throws exception if the given string is empty`() {
@@ -112,7 +113,7 @@ internal class AnimeListJsonDeserializerTest {
                         "drama",
                         "sci-fi",
                         "space",
-                        ),
+                    ),
                 ),
                 Anime(
                     _title = "Cowboy Bebop: Tengoku no Tobira",
@@ -233,6 +234,23 @@ internal class AnimeListJsonDeserializerTest {
 
             // then
             assertThat(result.data).containsAll(expectedEntries)
+        }
+    }
+
+    @Nested
+    inner class CompanionObjectTests {
+
+        @Test
+        fun `instance property always returns same instance`() {
+            // given
+            val previous = AnimeListJsonStringDeserializer.instance
+
+            // when
+            val result = AnimeListJsonStringDeserializer.instance
+
+            // then
+            assertThat(result).isExactlyInstanceOf(AnimeListJsonStringDeserializer::class.java)
+            assertThat(result===previous).isTrue()
         }
     }
 }

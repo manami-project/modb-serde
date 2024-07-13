@@ -4,6 +4,7 @@ import io.github.manamiproject.modb.core.extensions.EMPTY
 import io.github.manamiproject.modb.test.exceptionExpected
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Nested
 import kotlin.test.Test
 
 internal class DeadEntriesJsonStringDeserializerTest {
@@ -95,6 +96,23 @@ internal class DeadEntriesJsonStringDeserializerTest {
                 "1kj5g--41",
                 "3jl253vv9",
             )
+        }
+    }
+
+    @Nested
+    inner class CompanionObjectTests {
+
+        @Test
+        fun `instance property always returns same instance`() {
+            // given
+            val previous = DeadEntriesJsonStringDeserializer.instance
+
+            // when
+            val result = DeadEntriesJsonStringDeserializer.instance
+
+            // then
+            assertThat(result).isExactlyInstanceOf(DeadEntriesJsonStringDeserializer::class.java)
+            assertThat(result===previous).isTrue()
         }
     }
 }
