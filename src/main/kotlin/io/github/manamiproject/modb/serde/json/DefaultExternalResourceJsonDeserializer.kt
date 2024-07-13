@@ -40,7 +40,7 @@ import java.util.zip.ZipInputStream
  * @param deserializer Deserializer for either the dataset or dead entries file.
  */
 public class DefaultExternalResourceJsonDeserializer<out T>(
-    private val httpClient: HttpClient = DefaultHttpClient(),
+    private val httpClient: HttpClient = DefaultHttpClient.instance,
     private val deserializer: JsonDeserializer<T>,
 ) : ExternalResourceJsonDeserializer<T> {
 
