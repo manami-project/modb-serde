@@ -40,7 +40,13 @@ public class AnimeListJsonSerializer(
         }
     }
 
-    private companion object {
+    public companion object {
         private val log by LoggerDelegate()
+
+        /**
+         * Singleton of [AnimeListJsonSerializer]
+         * @since 5.2.0
+         */
+        public val instance: AnimeListJsonSerializer by lazy { AnimeListJsonSerializer() }
     }
 }

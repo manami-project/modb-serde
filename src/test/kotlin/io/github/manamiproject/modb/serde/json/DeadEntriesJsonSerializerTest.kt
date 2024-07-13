@@ -2,6 +2,7 @@ package io.github.manamiproject.modb.serde.json
 
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Nested
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneOffset.UTC
@@ -89,6 +90,23 @@ internal class DeadEntriesJsonSerializerTest {
                   ]
                 }
             """.trimIndent())
+        }
+    }
+
+    @Nested
+    inner class CompanionObjectTests {
+
+        @Test
+        fun `instance property always returns same instance`() {
+            // given
+            val previous = DeadEntriesJsonSerializer.instance
+
+            // when
+            val result = DeadEntriesJsonSerializer.instance
+
+            // then
+            assertThat(result).isExactlyInstanceOf(DeadEntriesJsonSerializer::class.java)
+            assertThat(result===previous).isTrue()
         }
     }
 }

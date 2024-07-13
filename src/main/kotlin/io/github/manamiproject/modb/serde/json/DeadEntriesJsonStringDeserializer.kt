@@ -21,7 +21,13 @@ public class DeadEntriesJsonStringDeserializer : JsonDeserializer<DeadEntries> {
         return@withContext Json.parseJson(json)!!
     }
 
-    private companion object {
+    public companion object {
         private val log by LoggerDelegate()
+
+        /**
+         * Singleton of [DeadEntriesJsonStringDeserializer]
+         * @since 5.2.0
+         */
+        public val instance: DeadEntriesJsonStringDeserializer by lazy { DeadEntriesJsonStringDeserializer() }
     }
 }

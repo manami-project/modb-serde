@@ -21,7 +21,13 @@ public class AnimeListJsonStringDeserializer : JsonDeserializer<Dataset> {
         return@withContext Json.parseJson<Dataset>(json)!!
     }
 
-    private companion object {
+    public companion object {
         private val log by LoggerDelegate()
+
+        /**
+         * Singleton of [AnimeListJsonStringDeserializer]
+         * @since 5.2.0
+         */
+        public val instance: AnimeListJsonStringDeserializer by lazy { AnimeListJsonStringDeserializer() }
     }
 }
