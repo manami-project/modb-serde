@@ -2,6 +2,7 @@ package io.github.manamiproject.modb.serde.json
 
 import io.github.manamiproject.modb.core.models.Anime
 import io.github.manamiproject.modb.core.models.AnimeSeason
+import io.github.manamiproject.modb.core.models.Duration
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
@@ -41,6 +42,7 @@ internal class AnimeListJsonSerializerTest {
                           },
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "duration": null,
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -117,6 +119,10 @@ internal class AnimeListJsonSerializerTest {
                           },
                           "picture": "https://cdn.myanimelist.net/images/anime/10/19621.jpg",
                           "thumbnail": "https://cdn.myanimelist.net/images/anime/10/19621t.jpg",
+                          "duration": {
+                            "value": 3600,
+                            "unit": "SECONDS"
+                          },
                           "synonyms": [
                             "Clannad ~After Story~: Another World, Kyou Chapter",
                             "Clannad: After Story OVA",
@@ -144,6 +150,9 @@ internal class AnimeListJsonSerializerTest {
 
                 val animeList = listOf(
                     Anime(
+                        sources = hashSetOf(
+                            URI("https://myanimelist.net/anime/6351"),
+                        ),
                         _title = "Clannad: After Story - Mou Hitotsu no Sekai, Kyou-hen",
                         type = Anime.Type.SPECIAL,
                         episodes = 1,
@@ -153,28 +162,28 @@ internal class AnimeListJsonSerializerTest {
                             year = 2009
                         ),
                         picture = URI("https://cdn.myanimelist.net/images/anime/10/19621.jpg"),
-                        thumbnail = URI("https://cdn.myanimelist.net/images/anime/10/19621t.jpg")
-                    ).apply {
-                        addSources(listOf(URI("https://myanimelist.net/anime/6351")))
-                        addSynonyms(
-                            listOf(
-                                "Clannad ~After Story~: Another World, Kyou Chapter",
-                                "Clannad: After Story OVA",
-                                "クラナド　アフターストーリー　もうひとつの世界　杏編"
-                            )
-                        )
-                        addRelatedAnime(listOf(URI("https://myanimelist.net/anime/2167")))
-                        addTags(
-                            listOf(
-                                "comedy",
-                                "drama",
-                                "romance",
-                                "school",
-                                "slice of life",
-                                "supernatural"
-                            )
-                        )
-                    }
+                        thumbnail = URI("https://cdn.myanimelist.net/images/anime/10/19621t.jpg"),
+                        duration = Duration(
+                            value = 1,
+                            unit = Duration.TimeUnit.HOURS,
+                        ),
+                        relatedAnime = hashSetOf(
+                            URI("https://myanimelist.net/anime/2167"),
+                        ),
+                        synonyms = hashSetOf(
+                            "Clannad ~After Story~: Another World, Kyou Chapter",
+                            "Clannad: After Story OVA",
+                            "クラナド　アフターストーリー　もうひとつの世界　杏編",
+                        ),
+                        tags = hashSetOf(
+                            "comedy",
+                            "drama",
+                            "romance",
+                            "school",
+                            "slice of life",
+                            "supernatural",
+                        ),
+                    )
                 )
 
                 // when
@@ -214,6 +223,7 @@ internal class AnimeListJsonSerializerTest {
                           },
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "duration": null,
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -230,6 +240,7 @@ internal class AnimeListJsonSerializerTest {
                           },
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "duration": null,
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -246,6 +257,7 @@ internal class AnimeListJsonSerializerTest {
                           },
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "duration": null,
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -296,6 +308,7 @@ internal class AnimeListJsonSerializerTest {
                           },
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "duration": null,
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -312,6 +325,7 @@ internal class AnimeListJsonSerializerTest {
                           },
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "duration": null,
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -328,6 +342,7 @@ internal class AnimeListJsonSerializerTest {
                           },
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "duration": null,
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -387,6 +402,7 @@ internal class AnimeListJsonSerializerTest {
                           },
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "duration": null,
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -403,6 +419,7 @@ internal class AnimeListJsonSerializerTest {
                           },
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "duration": null,
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
@@ -419,6 +436,7 @@ internal class AnimeListJsonSerializerTest {
                           },
                           "picture": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic.png",
                           "thumbnail": "https://raw.githubusercontent.com/manami-project/anime-offline-database/master/pics/no_pic_thumbnail.png",
+                          "duration": null,
                           "synonyms": [],
                           "relatedAnime": [],
                           "tags": []
