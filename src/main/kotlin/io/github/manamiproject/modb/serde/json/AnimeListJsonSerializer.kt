@@ -33,10 +33,10 @@ public class AnimeListJsonSerializer(
 
         return@withContext if (minify) {
             log.info { "Serializing anime list minified." }
-            Json.toJson(data, DEACTIVATE_PRETTY_PRINT, DEACTIVATE_SERIALIZE_NULL, DEACTIVATE_SERIALIZE_DURATION)
+            Json.toJson(data, DEACTIVATE_PRETTY_PRINT, DEACTIVATE_SERIALIZE_NULL)
         } else {
             log.info { "Serializing anime list pretty print." }
-            Json.toJson(data, DEACTIVATE_SERIALIZE_DURATION)
+            Json.toJson(data)
         }
     }
 
